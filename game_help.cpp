@@ -6,18 +6,19 @@ game_help::game_help(QWidget *parent)
     : QWidget{parent}
 {
     this->setWindowTitle("游戏帮助");
-    this->setFixedSize(800,500);
+    this->setFixedSize(800,550);
     //设置帮助按钮
     My_PushButton *back_Btn = new My_PushButton(":/photo/back.png");
-    //设置父类
-    back_Btn->setParent(this);
-    back_Btn->move(500,this->height()*0.8);
+    back_Btn->setParent(this);//设置父类
+    back_Btn->move(500,this->height() * 0.8);
     //链接按钮
     connect(back_Btn, &QPushButton::clicked, [=]() {
         back_Btn->zoom1();
         back_Btn->zoom2();
-        QTimer::singleShot(400, this, [=]() {
+        QTimer::singleShot(500, this, [=]() {
             this->close();
+            //
+            //
             emit
                 this->back();
         });
@@ -26,5 +27,6 @@ game_help::game_help(QWidget *parent)
 }
 void game_help::paintEvent(QPaintEvent *) {
     QPainter painter(this);
+    //绘制背景
     painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/gamehelp.png"));
 }

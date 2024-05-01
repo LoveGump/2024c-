@@ -29,23 +29,40 @@ void MushRoom::MushRoom_Move(QVector<QVector<int>>::iterator it,Unknown *u,Brick
     }
     mushroom_x = *it->begin();
     mushroom_y = *(it->begin() + 1);
+    //蘑菇的状态为1
     mushroom_state = 1;
 }
 void MushRoom::Move_state(){
+    //如果蘑菇状态不为 0 或者 -2
     if (mushroom_state != 0 && mushroom_state != -2) {
+        //如果蘑菇的状态小于等于20
         if (mushroom_state <= 20) {
+            //
             mushroom_y -= 2;
+
             mushroom_state++;
         } else if (mushroom_state > 20) {
             mushroom_x += 2;
+
             mushroom_state++;
         }
+        // 检查蘑菇是否与砖块碰撞
         for (QVector < QVector < int >> ::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end();it++){
             if (*it->begin() - mushroom_x >= -50 && *it->begin() - mushroom_x <= 30 &&
                 *(it->begin() + 1) <= mushroom_y + 40 && *(it->begin() + 1) >= mushroom_y && *(it->begin() + 2) != 0) {
                 return;
             }
         }
+        // 检查蘑菇是否与未知砖块碰撞
+        for (QVector < QVector < int >> ::iterator it = unknown->m.begin()->begin(); it != unknown->m.begin()->end();it++){
+            if (*it->begin() - mushroom_x >= -50 && *it->begin() - mushroom_x <= 30 &&
+                *(it->begin() + 1) <= mushroom_y + 40 && *(it->begin() + 1) >= mushroom_y) {
+                return;
+            }
+        }
+        //
+        //
+        // 检查蘑菇是否与管道碰撞
         for (QVector < QVector < int >> ::iterator it = unknown->m.begin()->begin(); it != unknown->m.begin()->end();it++){
             if (*it->begin() - mushroom_x >= -50 && *it->begin() - mushroom_x <= 30 &&
                 *(it->begin() + 1) <= mushroom_y + 40 && *(it->begin() + 1) >= mushroom_y) {

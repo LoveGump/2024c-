@@ -7,14 +7,17 @@
 class Brick
 {
 public:
-    QVector<int> v; // 存储整数值的向量
-    QVector<QVector<int>> v2; // 存储整数向量的二维向量
-    QMap<int, QVector<QVector<int>>> m; // 将整数键映射到二维整数向量的映射
+    QVector<int> v;
+    QVector<QVector<int>> v2; // 储存坐标的二位容器
+    QMap<int, QVector<QVector<int>>> m;
 
     int left_shatter_x; // 左碎块的 x 坐标
     int left_shatter_y; // 左碎块的 y 坐标
     int right_shatter_x; // 右碎块的 x 坐标
     int right_shatter_y; // 右碎块的 y 坐标
+
+    //
+    //
     int shatter_state; // 砖块的状态
 
     Brick(); // 构造函数声明

@@ -9,6 +9,7 @@ Brick::Brick() {
 void Brick::BrickInit() {
     //初始化砖块状态
     shatter_state = 0;
+
     //绘制砖块的位置（横坐标，纵坐标）
     int arr[51][2] = {{1000, 350},
                       {1100, 350},
@@ -66,14 +67,16 @@ void Brick::BrickInit() {
     for (int i = 0; i < 51; i++) {
         v.push_back(arr[i][0]);
         v.push_back(arr[i][1]);
-        v.push_back(1);
+        v.push_back(1); //1代表砖块没有碎
         v2.push_back(v);
         v.clear();
     }
     //将v2插入m（）
     m.insert(1, v2);
 }
-// 碎裂砖块的函数声明，接受一个二维整数向量的迭代器作为参数
+
+
+// 碎裂砖块的函数声明，接受砖块此时的坐标
 void Brick::BrickShatter(QVector<QVector<int>>::iterator it)
 {
     //设置x坐标
@@ -92,6 +95,7 @@ void Brick::ShatterState() {
     if (shatter_state == 0) {
         return;
     }
+
     // 如果砖块正在破碎过程中
     if (shatter_state > 0 && shatter_state < 10) {
         // 砖块在水平方向上变宽

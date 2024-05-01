@@ -25,8 +25,7 @@ public:
 
     explicit Game_Scene(QWidget *parent = nullptr);
 
-    //创建角色对象
-    Mario *mario;
+
 
     int timer1; // 计时器1
     int timer2; // 计时器2
@@ -43,6 +42,8 @@ public:
     QString key; // 按键状态
     Game_Pause *Pause; // 游戏暂停对象
 
+
+    Mario *mario;    //创建角色对象
     Brick *brick; // 砖块对象
     Pipe *pipe;
     Unknown_Surprise *unknown;

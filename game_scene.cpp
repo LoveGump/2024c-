@@ -8,20 +8,21 @@ Game_Scene::Game_Scene(QWidget *parent)
     : QWidget{parent}
 {
     //设置标题
-    setWindowTitle("超级玛丽");
+    setWindowTitle("超级马里奥");
 
     //设置窗口大小
     setFixedSize(800, 500);
     //显示1.5秒界面之后，开始游戏
+
     Game_Init();
     Pause_Init();
+
     QTimer::singleShot(1500, this, [=]() {
         qDebug()<<mario->life;
         timer1 = startTimer(15);
         timer3 = startTimer(40);
         game_start = true;
     });
-
 }
 
 
@@ -77,7 +78,10 @@ void Game_Scene::paintEvent(QPaintEvent *) //绘制地图
     }
 
 }
- void Game_Scene::Pause_Init() // 初始化暂停状态
+
+
+// 初始化暂停状态
+ void Game_Scene::Pause_Init()
 {
     Pause = new Game_Pause();//初始化暂停窗口
     //继续游戏按钮
