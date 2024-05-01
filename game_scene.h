@@ -9,8 +9,14 @@
 #include<QTimer>
 #include<QKeyEvent>
 #include<QDialog>
+#include<QMap>
 #include "game_pause.h"
 #include"mario.h"
+#include"brick.h"
+#include"pipe.h"
+#include"unkown_surprise.h"
+#include"mushroom.h"
+#include"castle.h"
 
 class Game_Scene : public QWidget
 {
@@ -37,7 +43,14 @@ public:
     QString key; // 按键状态
     Game_Pause *Pause; // 游戏暂停对象
 
-    //Brick *brick; // 砖块对象
+    Brick *brick; // 砖块对象
+    Pipe *pipe;
+    Unknown_Surprise *unknown;
+    MushRoom *mushroom;
+
+   // Master *master;
+   // Fire *fire;
+    Castle *castle;
 
     void paintEvent(QPaintEvent *); // 绘图事件
    //  void keyPressEvent(QKeyEvent *event); // 键盘按下事件

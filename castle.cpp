@@ -12,4 +12,4 @@ void Castle::Castle_Init() { // Castle 类的 Castle_Init 函数定义开始
     v.clear();         // 清空整数向量 v
     v1.clear();        // 清空二维整数向量 v1
 
-} // Castle_Init 函数定义结束
+}

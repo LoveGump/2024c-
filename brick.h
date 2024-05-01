@@ -1,6 +1,9 @@
 #ifndef BRICK_H
 #define BRICK_H
 
+#include<QVector>
+#include<QMap>
+
 class Brick
 {
 public:

@@ -69,7 +69,12 @@ void Game_Scene::paintEvent(QPaintEvent *) //绘制地图
     painter.drawText(50, 50, QString::number(time, 'f', 1));
     //绘制草坪地板
     painter.drawPixmap(0, 450, QPixmap(":/photo/ground.png"), mario->ground_state, 0, 800, 45);//画地板
-
+    //如果马里奥的横坐标已经超过过7800 就可以画出城堡
+    if (mario->x > 7800) {
+        QVector < QVector < int >> ::iterator it = castle->m.begin()->begin();
+        //城堡相对于马里奥的坐标为它的初始值8700 减去马里奥现在的横坐标 ，纵坐标为其本身的纵坐标
+        painter.drawPixmap(*it->begin() - mario->x, *(it->begin() + 1), 200, 200, QPixmap(":/photo/castle.png"));
+    }
 
 }
  void Game_Scene::Pause_Init() // 初始化暂停状态

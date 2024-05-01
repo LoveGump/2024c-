@@ -19,7 +19,10 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mario.cpp \
-    my_pushbutton.cpp
+    mushroom.cpp \
+    my_pushbutton.cpp \
+    pipe.cpp \
+    unkown_surprise.cpp
 
 HEADERS += \
     brick.h \
@@ -29,7 +32,10 @@ HEADERS += \
     game_scene.h \
     mainwindow.h \
     mario.h \
-    my_pushbutton.h
+    mushroom.h \
+    my_pushbutton.h \
+    pipe.h \
+    unkown_surprise.h
 
 FORMS += \
     mainwindow.ui
