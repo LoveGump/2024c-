@@ -12,21 +12,21 @@ Game_Pause::Game_Pause() {
     this->setWindowModality(Qt::ApplicationModal);
 
     //添加继续游戏按钮
-    btn_continue = new MyPushButton(":/photo/continueGame.png");
+    btn_continue = new My_PushButton(":/photo/continueGame.png");
     btn_continue->setParent(this);
     btn_continue->setFixedSize(150, 75);
     btn_continue->setIconSize(QSize(150, 75));
     btn_continue->move(20, 10);
 
     //添加重新开始按钮
-    initGame = new MyPushButton(":/photo/initGame.png");
+    initGame = new My_PushButton(":/photo/initGame.png");
     initGame->setParent(this);
     initGame->setFixedSize(150, 75);
     initGame->setIconSize(QSize(150, 75));
     initGame->move(20, 90);
 
     //添加退出游戏按钮
-    btn_exit = new MyPushButton(":/photo/start.png");//添加离开按钮
+    btn_exit = new My_PushButton(":/photo/start.png");//添加离开按钮
     btn_exit->setParent(this);
     btn_exit->setFixedSize(150, 75);
     btn_exit->setIconSize(QSize(150, 75));
@@ -51,7 +51,7 @@ Game_Pause::Game_Pause() {
 
 // 处理键盘按下事件的函数
 //ESC继续游戏 R重新开始 Q退出游戏
-void GamePause::keyPressEvent(QKeyEvent *event) {
+void Game_Pause::keyPressEvent(QKeyEvent *event) {
     switch (event->key())
     {
     case Qt::Key_Escape:

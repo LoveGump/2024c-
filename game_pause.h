@@ -3,21 +3,21 @@
 
 #include <QDialog>
 #include <QWidget>
-#include"mypushbutton.h"
+#include"my_pushbutton.h"
 
 class Game_Pause : public QDialog
 {
 public:
     Game_Pause();
 
-    MyPushButton *btn_continue;//继续游戏
-    MyPushButton *initGame;//重新开始
-    MyPushButton *btn_exit;//退出游戏
+    My_PushButton *btn_continue;//继续游戏
+    My_PushButton *initGame;//重新开始
+    My_PushButton *btn_exit;//退出游戏
 
     // 处理键盘按下事件的函数
     void keyPressEvent(QKeyEvent *event);
 
-    // 处理绘制事件的函数
+    // 绘画背景
     void paintEvent(QPaintEvent *);
 };
 

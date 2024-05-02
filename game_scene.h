@@ -14,6 +14,7 @@
 #include"mario.h"
 #include"brick.h"
 #include"pipe.h"
+#include"master.h"
 #include"unkown_surprise.h"
 #include"mushroom.h"
 #include"castle.h"
@@ -48,23 +49,22 @@ public:
     Pipe *pipe;
     Unknown_Surprise *unknown;
     MushRoom *mushroom;
-
-   // Master *master;
-   // Fire *fire;
+    Master *master;
     Castle *castle;
+    // Fire *fire;
 
     void paintEvent(QPaintEvent *); // 绘图事件
-   //  void keyPressEvent(QKeyEvent *event); // 键盘按下事件
-   //  void keyReleaseEvent(QKeyEvent *event); // 键盘抬起事件
+    //  void keyPressEvent(QKeyEvent *event); // 键盘按下事件
+    //  void keyReleaseEvent(QKeyEvent *event); // 键盘抬起事件
     void timerEvent(QTimerEvent *event); // 定时器事件
     void Game_Init(); // 初始化游戏
-   //  void Die_Init(); // 初始化死亡状态
-     void Pause_Init(); // 初始化暂停状态
-   //  void Pause_Game_Init(); // 初始化游戏暂停状态
-   //  void Fall_Down(int &y); // 角色掉落处理
-   //  void Jump_Collision(); // 跳跃碰撞检测
-   //  void Move_Collision(); // 移动碰撞检测
-   //  void Game_Win(); // 游戏胜利处理
+    //  void Die_Init(); // 初始化死亡状态
+    void Pause_Init(); // 初始化暂停状态
+    void Pause_Game_Init(); // 初始化游戏暂停状态
+    //  void Fall_Down(int &y); // 角色掉落处理
+    //  void Jump_Collision(); // 跳跃碰撞检测
+    //  void Move_Collision(); // 移动碰撞检测
+    //  void Game_Win(); // 游戏胜利处理
 signals:
 };
 

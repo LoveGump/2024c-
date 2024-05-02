@@ -16,10 +16,10 @@ void MushRoom::MushRoom_Init()
 }
 
 //mushroom的移动函数
-void MushRoom::MushRoom_Move(QVector<QVector<int>>::iterator it,Unknown *u,Brick *r, Mary *m){
+void MushRoom::MushRoom_Move(QVector<QVector<int>>::iterator it,Unknown_Surprise *u,Brick *r, Mario *m){
     unknown = u;
     brick = r;
-    mary = m;
+    mario = m;
     //如果马里奥的颜色是1 那就将此时的蘑菇种类更新为1
     if(mario->colour==1){
         mushroom_kind = 1;
@@ -75,9 +75,9 @@ void MushRoom::Move_state(){
 
     }
     if (mushroom_y >= 460 && mushroom_state != 0) {
-        if (mushroom_x - 330 <= mary->x && mushroom_x - 270 >= mary->x && mushroom_y - mary->y == 5) {
+        if (mushroom_x - 330 <= mario->x && mushroom_x - 270 >= mario->x && mushroom_y - mario->y == 5) {
             mushroom_state = 0;
-            mary->colour = mushroom_kind + 1;
+            mario->colour = mushroom_kind + 1;
             mushroom_fall_down_distance = 19;
             return;
         }

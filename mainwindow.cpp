@@ -12,14 +12,10 @@ MainWindow::MainWindow(QWidget *parent)
     //设置窗口名字
     this->setWindowTitle("Super_Mario_bro");
     //设置窗口大小
-    this->setFixedSize(800,500);
+    this->setFixedSize(800,545);
     //设置图标
     QApplication::setWindowIcon(QIcon(":/photo/icon.png"));
-
-    //设置一个带动画的按钮类
-
-
-    //设置开始按钮`
+    //设置开始游戏按钮
     My_PushButton *start_Btn = new My_PushButton(":/photo/start3.png");
     //设置父类
     start_Btn->setParent(this);
@@ -38,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
         //先触发动画
         start_Btn->zoom1();
         start_Btn->zoom2();
-        start_Music->play(); // 播放声音
+       // start_Music->play(); // 播放声音
         //  start_Music->play(); //结束播放
         //  之后等动画结束之后进入游戏
         QTimer::singleShot(500,this,[=](){
@@ -90,5 +86,5 @@ void MainWindow::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
 
-    painter.drawPixmap(0,0,800,500,QPixmap(":/photo/background.jpg"));//画背景图
+    painter.drawPixmap(0,0,800,550,QPixmap(":/photo/background.jpg"));//画背景图
 }

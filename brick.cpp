@@ -67,7 +67,7 @@ void Brick::BrickInit() {
     for (int i = 0; i < 51; i++) {
         v.push_back(arr[i][0]);
         v.push_back(arr[i][1]);
-        v.push_back(1); //1代表砖块没有碎
+        v.push_back(1);            //1在后续的过程中代表砖块没有碎
         v2.push_back(v);
         v.clear();
     }

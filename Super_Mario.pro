@@ -19,6 +19,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mario.cpp \
+    master.cpp \
     mushroom.cpp \
     my_pushbutton.cpp \
     pipe.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     game_scene.h \
     mainwindow.h \
     mario.h \
+    master.h \
     mushroom.h \
     my_pushbutton.h \
     pipe.h \
