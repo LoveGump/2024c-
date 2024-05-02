@@ -1,7 +1,7 @@
 #include "game_scene.h"
 #include "my_pushbutton.h"
 #include "qtimer.h"
-
+#include<QDebug>
 
 Game_Scene::Game_Scene(QWidget *parent)
     : QWidget{parent}
@@ -15,8 +15,10 @@ Game_Scene::Game_Scene(QWidget *parent)
 
     //显示1.5秒界面之后，开始游戏
     QTimer::singleShot(1500, this, [=]() {
+
         timer1 = startTimer(15);
         timer3 = startTimer(40);
+        qDebug()<<1;
         game_start = true;
     });
 }
@@ -368,17 +370,26 @@ void Game_Scene::timerEvent(QTimerEvent *event) // 定时器事件
     }
     if (event->timerId() == timer1)
     {
+         qDebug()<<2;
         mario->Mario_Move(key);
+          qDebug()<<1;
         mario->Jump_And_Down();
+           qDebug()<<1;
         Jump_Collision();
+            qDebug()<<3;
         Move_Collision();
+             qDebug()<<2;
         brick->ShatterState();
+              qDebug()<<1;
         mushroom->Move_state();
+               qDebug()<<1;
         master->Master_Move();
+                qDebug()<<1;
         Die_Init();
+                 qDebug()<<1;
         Fall_Down(mario->y);
         //fire->Fire_state();
-
+ qDebug()<<1;
         update();//刷新屏幕
     }
 
@@ -463,6 +474,7 @@ void Game_Scene::Fall_Down(int &y)
 
 //检测mario移动过程中 是否 碰到 障碍物
 void Game_Scene::Move_Collision() {
+     qDebug()<<1;
     // 检测 mario 是否与砖块发生了碰撞
     for (QVector < QVector <int> >::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end(); it++)
     {
@@ -482,6 +494,7 @@ void Game_Scene::Move_Collision() {
             return;
         }
     }
+     qDebug()<<1;
     // 检测mario是否与神秘方块发生了碰撞
     for (QVector<QVector<int>>::iterator it = unknown->m.begin()->begin(); it != unknown->m.begin()->end(); it++)
     {
@@ -500,6 +513,7 @@ void Game_Scene::Move_Collision() {
             return;
         }
     }
+     qDebug()<<2;
     // 检测mario 是否与水管发生了碰撞
     for (QVector<QVector<int>>::iterator it = pipe->long_m.begin()->begin(); it != pipe->long_m.begin()->end(); it++)
     {
@@ -517,6 +531,7 @@ void Game_Scene::Move_Collision() {
             return;
         }
     }
+     qDebug()<<2;
     for (QVector<QVector<int>>::iterator it = pipe->short_m.begin()->begin(); it != pipe->short_m.begin()->end(); it++)
     {
         if (*it->begin() - mario->x - 300 >= 30 && *it->begin() - mario->x - 300 <= 35 &&
@@ -532,11 +547,13 @@ void Game_Scene::Move_Collision() {
             return;
         }
     }
+     qDebug()<<2;
     QVector < QVector < int >> ::iterator it = castle->m.begin()->begin();
     if (*it->begin() - mario->x - 300 >= -60 && *it->begin() - mario->x - 300 <= -20 &&
         *(it->begin() + 1) < mario->y - 100 && *(it->begin() + 1) > mario->y - 200) {
 
         is_win = true;
+         qDebug()<<1;
         Game_Win();
     }
     mario->can_move = true;

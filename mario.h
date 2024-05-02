@@ -1,9 +1,9 @@
 #ifndef MARIO_H
 #define MARIO_H
 
-//主角马里奥类
-#include<QString>
 
+#include<QString>
+//主角马里奥类
 class Mario
 {
 public:

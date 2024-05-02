@@ -2,6 +2,7 @@
 
 Pipe::Pipe() {
     //初始化管道
+     Pipe_Init();
 }
 //初始话管道
 void Pipe::Pipe_Init()

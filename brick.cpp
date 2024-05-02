@@ -101,7 +101,7 @@ void Brick::ShatterState()
 
     // 如果砖块正在破碎过程中
     if (shatter_state > 0 && shatter_state < 10) {
-        // 砖块在水平方向上变宽
+        // 砖块在水平方变宽
         left_shatter_x -= 20 - shatter_state;
         right_shatter_x += 20 - shatter_state;
         // 砖块在垂直方向上变高
@@ -111,7 +111,8 @@ void Brick::ShatterState()
         shatter_state++;
     }
     // 如果破碎状态已经过了扩展阶段，且砖块还未完全消失
-    else if (shatter_state >= 10 && left_shatter_y < 500) {
+    else if (shatter_state >= 10 && left_shatter_y < 500)
+    {
         // 砖块向下移动
         left_shatter_y += shatter_state;
         right_shatter_y += shatter_state;
@@ -119,7 +120,8 @@ void Brick::ShatterState()
         shatter_state++;
     }
     // 如果砖块完全消失
-    else if (left_shatter_y >= 500) {
+    else if (left_shatter_y >= 500)
+    {
         // 重置破碎相关的变量
         left_shatter_x = right_shatter_x = left_shatter_y = right_shatter_y = 0;
         // 重置破碎状态
