@@ -37,7 +37,7 @@ void Mario::Mario_Init() {
 void Mario::Move_state() // 移动状态更新函数
 {
     //如果walk_state==1140，walk_state = 0
-    if (walk_state == 1140) {
+    if (walk_state == 1197) {
         walk_state = 0;
     }
     //如果ground_state==805，ground_state = 5

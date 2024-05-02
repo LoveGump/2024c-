@@ -20,6 +20,7 @@ public:
     int distance; // 跳跃距离
     int die_state; // 死亡状态
     int die_pix_state; // 死亡像素状态
+
     int invincible_state; // 无敌状态
     bool can_move; // 是否可以移动
     bool is_invincible; // 是否无敌

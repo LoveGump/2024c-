@@ -88,11 +88,120 @@ void Game_Scene::Pause_Init()
 
 }
 
+//按键函数 按下按键 执行相应的函数
+void Game_Scene::keyPressEvent(QKeyEvent *event)
+{
+    if (!mario->is_die)
+    {
+        switch (event->key())
+        {
+
+        case Qt::Key_Right:
+        case Qt::Key_D:
+            mario->direction = "right";
+            key = "right";
+            break;
+
+        case Qt::Key_Left:
+        case Qt::Key_A:
+            mario->direction ="left";
+            key = "left";
+            break;
+
+
+            //
+            //
+        case Qt::Key_Z:
+            timer2 = startTimer(25);
+            is_kill_timer2 = false;
+            break;
+
+        case Qt::Key_Space:
+        case Qt::Key_W:
+        case Qt::Key_Up:
+            mario->is_jump = true;
+            break;
+
+        case Qt::Key_X:
+            if (!is_press_x && !mario->is_jump && mario->is_jump_end && mario->colour == 3)
+            {
+                is_press_x = true;
+                //  fire->Fire_xy();
+            }
+            break;
+        }
+    }
+}
+
+//按键函数 释放按键 执行相应的函数
+void Game_Scene::keyReleaseEvent(QKeyEvent *event)
+{
+    if (!mario->is_die)
+    {
+        switch (event->key())
+        {
+        case Qt::Key_Right:
+        case Qt::Key_D:
+            mario->walk_state = 0;
+            key = "null";
+            break;
+
+        case Qt::Key_Left:
+        case Qt::Key_A:
+            mario->walk_state = 0;
+            key = "null";
+            break;
+            //关闭计时器2
+        case Qt::Key_Z:
+            is_kill_timer2 = true;
+            killTimer(timer2);
+            break;
+
+
+        case Qt::Key_Space:
+        case Qt::Key_W:
+        case Qt::Key_Up:
+            mario->is_jump = false;
+            mario->is_space_release = true;
+            break;
+
+        case Qt::Key_X:
+            is_press_x = false;
+            break;
+        case Qt::Key_Escape:
+            if (game_start)
+            {
+
+                //关闭计时器1
+                killTimer(timer1);
+                if (is_kill_timer2)
+                {
+                    //关闭计时器2
+                    killTimer(timer2);
+                }
+                //关闭计时器3
+                killTimer(timer3);
+                Pause->setParent(this);
+                Pause->open();
+            }
+            break;
+        case Qt::Key_C:
+            if (mario->life < 8)
+            {
+                mario->life++;
+            }
+        }
+    }
+}
+
+
+
 //绘制地图
 void Game_Scene::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
-    if (!game_start) { // 如果游戏尚未开始
+    if (!game_start)  // 如果游戏尚未开始
+    {
         // 绘制游戏未开始时的界面
         painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/blackground2.png")); // 黑背景
         painter.drawPixmap(300, 250, 40, 40, QPixmap(":/photo/life.png")); // 绘制生命图标
@@ -119,7 +228,8 @@ void Game_Scene::paintEvent(QPaintEvent *)
     painter.drawText(280, 50, QString::number(unknown->coin));
     painter.drawText(430, 50, QString::number(score));
     //绘制生命值
-    for (int i = 1; i <= mario->life; i++) {
+    for (int i = 1; i <= mario->life; i++)
+    {
         painter.drawPixmap(800 - i * 45, 10, 40, 40, QPixmap(":/photo/life.png"));
     }
     //绘制倒计时图标
@@ -129,13 +239,15 @@ void Game_Scene::paintEvent(QPaintEvent *)
     //绘制草坪地板
     painter.drawPixmap(0, 500, QPixmap(":/photo/ground.png"), mario->ground_state, 0, 800, 45);//画地板
     //如果马里奥的横坐标已经超过过7800 就可以画出城堡
-    if (mario->x > 7800) {
+    if (mario->x > 7800)
+    {
         QVector < QVector < int >> ::iterator it = castle->m.begin()->begin();
         //城堡相对于马里奥的坐标为它的初始值8700 减去马里奥现在的横坐标 ，纵坐标为其本身的纵坐标
         painter.drawPixmap(*it->begin() - mario->x, *(it->begin() + 1), 200, 200, QPixmap(":/photo/castle.png"));
     }
     //蘑菇
-    if (mushroom->mushroom_state != 0) {
+    if (mushroom->mushroom_state != 0)
+    {
         painter.drawPixmap(mushroom->mushroom_x - mario->x, mushroom->mushroom_y, 40, 40,
                            QPixmap(":/photo/mushroom" + QString::number(mario->colour) + ".png"));
     }
@@ -144,7 +256,8 @@ void Game_Scene::paintEvent(QPaintEvent *)
     for (QVector < QVector < int >> ::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end(); it++)
     {
         //在玛丽后的50像素的和在玛丽前的800像素（绘制超过宽度的像素）的并且没有碎掉的砖块
-        if (*it->begin() - mario->x >= -50 && *it->begin() - mario->x <=800 && *(it->begin() + 2) == 1) {
+        if (*it->begin() - mario->x >= -50 && *it->begin() - mario->x <=800 && *(it->begin() + 2) == 1)
+        {
             painter.drawPixmap(*it->begin() - mario->x, *(it->begin() + 1), 50, 40, QPixmap(":/photo/brick1.png"));
         }
     }
@@ -155,11 +268,11 @@ void Game_Scene::paintEvent(QPaintEvent *)
         //没有顶过的
         //
         //
-        if (*it->begin() - mario->x >= -50 && *it->begin() - mario->x <= 800 && *(it->begin() + 2) != 0) {
+        if (*it->begin() - mario->x >= -50 && *it->begin() - mario->x <= 800 && *(it->begin() + 2) != 0)
+        {
             painter.drawPixmap(*it->begin() - mario->x, *(it->begin() + 1), QPixmap(":/photo/unknown.png"),
                                unknown->unknown_state, 0, 50, 40);
         }
-
         //被顶过的
         else if (*it->begin() - mario->x >= -50 && *it->begin() - mario->x <= 800 && *(it->begin() + 2) == 0)
         {
@@ -169,12 +282,81 @@ void Game_Scene::paintEvent(QPaintEvent *)
     }
     //
     //
-    if (unknown->coin_state > 0) {
+    if (unknown->coin_state > 0)
+    {
         painter.drawPixmap(unknown->coin_x - mario->x, unknown->coin_y, QPixmap(":/photo/coin.png"), unknown->coin_state,
                            0, 30, 33);
     }
+    //绘制管道  长管道 宽80 高100
+    for (QVector < QVector < int >> ::iterator it = pipe->long_m.begin()->begin(); it != pipe->long_m.begin()->end();it++)
+    {
+        if (*it->begin() - mario->x >= -80 && *it->begin() - mario->x < 800)
+        {
+            painter.drawPixmap(*it->begin() - mario->x, *(it->begin() + 1), 80, 100, QPixmap(":/photo/pipe_long.png"));
+        }
+    }
+    //短管道 80*50
+    for (QVector < QVector < int >> ::iterator it = pipe->short_m.begin()->begin(); it != pipe->short_m.begin()->end();it++)
+    {
+        if (*it->begin() - mario->x > -80 && *it->begin() - mario->x < 800)
+        {
+            painter.drawPixmap(*it->begin() - mario->x, *(it->begin() + 1), 80, 50, QPixmap(":/photo/pipe_short.png"));
+        }
+    }
 
+    //绘制砖块碎掉的动画
+    if (brick->shatter_state > 0)
+    {
+        painter.drawPixmap(brick->left_shatter_x - mario->x, brick->left_shatter_y - 20, 30, 30,
+                           QPixmap(":/photo/brick2.png"));
+        painter.drawPixmap(brick->left_shatter_x - mario->x, brick->left_shatter_y + 50, 30, 30,
+                           QPixmap(":/photo/brick2.png"));
+        painter.drawPixmap(brick->right_shatter_x - mario->x, brick->right_shatter_y - 20, 30, 30,
+                           QPixmap(":/photo/brick3.png"));
+        painter.drawPixmap(brick->right_shatter_x - mario->x, brick->right_shatter_y + 50, 30, 30,
+                           QPixmap(":/photo/brick3.png"));
+    }
 
+    //绘制master master的第三个坐标代表状态 0代表死亡 第四个代表方向 0代表左侧
+    for (QVector < QVector < int >> ::iterator it = master->m.begin()->begin(); it != master->m.begin()->end();it++)
+    {
+        if (*it->begin() - mario->x > -80 && *it->begin() - mario->x < 800 && *(it->begin() + 2) != 0)
+        {
+            painter.drawPixmap(*it->begin() - mario->x, *(it->begin() + 1), 40, 40,
+                               QPixmap(":/photo/master_" + QString::number(*(it->begin() + 3)) + ".png"));
+        }
+        //
+        //如果master被踩死  并且没有消失
+        else if (*it->begin() - mario->x > -80 && *(it->begin()) - mario->x < 800 && *(it->begin() + 2) == 0 &&*(it->begin() + 4) == 1)
+        {
+            painter.drawPixmap(*it->begin() - mario->x, *(it->begin() + 1) + 20, 40, 20,
+                               QPixmap(":/photo/master_" + QString::number(*(it->begin() + 3)) + ".png"));
+        }
+
+        //如果马里奥死亡
+        if (mario->is_die)
+        {
+            painter.drawPixmap(mario->map_x, mario->y, QPixmap(":/photo/mary_die.png"), mario->die_pix_state, 0, 50, 50);//画角色
+        }
+        //如果没死亡
+        else if (!mario->is_die && mario->invincible_state % 2 == 0 && !is_win)
+        {
+            painter.drawPixmap(mario->map_x, mario->y,
+                               QPixmap(":/photo/walk_" + mario->direction + QString::number(mario->colour) + ".png"),
+                               mario->walk_state, 0, 45, 45);//画角色
+        }
+
+        // if (fire->is_have) {
+        //     painter.drawPixmap(fire->x - mary->x, fire->y, 20, 20, QPixmap(":/photo/fire.png"));
+        // }
+        // if (fire->is_have1) {
+        //     painter.drawPixmap(fire->x1 - mary->x, fire->y1, 20, 20, QPixmap(":/photo/fire.png"));
+        // }
+        // if (fire->is_have2) {
+        //     painter.drawPixmap(fire->x2 - mary->x, fire->y2, 20, 20, QPixmap(":/photo/fire.png"));
+        // }
+
+    }
 
 }
 
@@ -183,41 +365,263 @@ void Game_Scene::paintEvent(QPaintEvent *)
 
 
 void Game_Scene::timerEvent(QTimerEvent *event) // 定时器事件
-
 {
-    if (event->timerId() == timer1 && mario->is_die) {
+    if (event->timerId() == timer1 && mario->is_die)
+    {
         mario->Mario_die();
-      //  Die_Init();
+        Die_Init();
         update();
         return;
     }
     if (event->timerId() == timer1) {
-        //mario->Mario_Move(key);
-        //mario->Jump_And_Down();
-        //  Jump_Collision();
-        // Move_Collision();
-        //  brick->ShatterState();
-        //  mushroom->Move_state();
-        //   master->Master_Move();
-        // Die_Init();
-        //Fall_Down(mario->y);
+        mario->Mario_Move(key);
+        mario->Jump_And_Down();
+         Jump_Collision();
+        Move_Collision();
+         brick->ShatterState();
+         mushroom->Move_state();
+          master->Master_Move();
+        Die_Init();
+        Fall_Down(mario->y);
         //fire->Fire_state();
 
 
         update();//刷新屏幕
     }
 
-    if (event->timerId() == timer2) {
+    if (event->timerId() == timer2)
+    {
         mario->Mario_Move(key);
     }
 
-    if (event->timerId() == timer3) {
+    if (event->timerId() == timer3)
+    {
         time -= 0.04;
         //unknown->Unknown_State();
-       // unknown->Crash_state();
+        // unknown->Crash_state();
     }
 }
+
+void Game_Scene::Fall_Down(int &y)
+{
+    if (mario->height - mario->distance < 0)
+    {
+        if (y > 455) {
+            y = 455;
+            mary->is_jump_end = true;
+            mary->distance = 0;
+            mary->height = 20;
+            return;
+        }
+        for (QVector < QVector < int >> ::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end();
+             it++)
+        {
+            if (*it->begin() - mary->x - 300 >= -30 && *it->begin() - mary->x - 300 <= 30 &&
+                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25 && *(it->begin() + 2) == 1) {
+                y = *(it->begin() + 1) - 45;
+                mary->is_jump_end = true;
+                mary->height = mary->distance = 20;
+                return;
+            }
+        }
+        for (QVector < QVector < int >> ::iterator it = unknown->m.begin()->begin(); it != unknown->m.begin()->end();
+             it++)
+        {
+            if (*it->begin() - mary->x - 300 >= -30 && *it->begin() - mary->x - 300 <= 30 &&
+                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25) {
+                y = *(it->begin() + 1) - 45;
+                mary->is_jump_end = true;
+                mary->height = mary->distance = 20;
+                return;
+            }
+        }
+        for (QVector < QVector < int >> ::iterator it = pipe->long_m.begin()->begin(); it !=
+                                                                                 pipe->long_m.begin()->end();
+             it++)
+        {
+            if (*it->begin() - mary->x - 300 >= -50 && *it->begin() - mary->x - 300 <= 30 &&
+                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25) {
+                y = *(it->begin() + 1) - 45;
+                mary->is_jump_end = true;
+                mary->height = mary->distance = 20;
+                return;
+            }
+        }
+        for (QVector < QVector < int >> ::iterator it = pipe->short_m.begin()->begin(); it !=
+                                                                                  pipe->short_m.begin()->end();
+             it++)
+        {
+            if (*it->begin() - mary->x - 300 >= -50 && *it->begin() - mary->x - 300 <= 30 &&
+                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25) {
+                y = *(it->begin() + 1) - 45;
+                mary->is_jump_end = true;
+                mary->height = mary->distance = 20;
+                return;
+            }
+        }
+    }
+}
+
+
+//检测mario移动过程中 是否 碰到 障碍物
+void Game_Scene::Move_Collision() {
+    // 检测 mario 是否与砖块发生了碰撞
+    for (QVector<QVector<int>>::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end(); it++)
+    {
+        // 如果 mario 向右移动并且与砖块相交
+        if (*it->begin() - mario->x - 300 >= 35 && *it->begin() - mario->x - 300 <= 40 &&
+            *(it->begin() + 1) - mario->y >= -35 && *(it->begin() + 1) - mario->y <= 35 &&
+            mario->direction == "right" && *(it->begin() + 2) == 1)
+        {
+            mario->can_move = false; // 禁止移动
+            return;
+        }
+        else if (*it->begin() - mario->x - 300 >= -40 && *it->begin() - mario->x - 300 <= -35 &&
+                   *(it->begin() + 1) - mario->y >= - 35 && *(it->begin() + 1) - mario->y <= 35 &&
+                   mario->direction == "left" && *(it->begin() + 2) == 1)
+        {
+            mario->can_move = false; // 禁止移动
+            return;
+        }
+    }
+    // 检测mario是否与神秘方块发生了碰撞
+    for (QVector<QVector<int>>::iterator it = unknown->m.begin()->begin(); it != unknown->m.begin()->end(); it++)
+    {
+        // 如果mario向右移动并且与神秘方块碰撞
+        if (*it->begin() - mario->x - 300 >= 35 && *it->begin() - mario->x - 300 <= 40 &&
+            *(it->begin() + 1) - mario->y >= -35 && *(it->begin() + 1) - mario->y <= 35 && mario->direction == "right")
+        {
+            mario->can_move = false; // 禁止移动
+            return;
+        }
+        else if (*it->begin() - mario->x - 300 >= -40 && *it->begin() - mario->x - 300 <= -35 &&
+                   *(it->begin() + 1) - mario->y >= -35 && *(it->begin() + 1) - mario->y >= 35 &&
+                 mario->direction == "left")
+        {
+            mario->can_move = false; // 禁止移动
+            return;
+        }
+    }
+    // 检测mario 是否与水管发生了碰撞
+    for (QVector<QVector<int>>::iterator it = pipe->long_m.begin()->begin(); it != pipe->long_m.begin()->end(); it++)
+    {
+
+        if (*it->begin() - mario->x - 300 >= 30 && *it->begin() - mario->x - 300 <= 35 &&
+            *(it->begin() + 1) - mario->y <= 45 && mario->direction == "right")
+        {
+            mario->can_move = false; // 禁止移动
+            return;
+        }
+        else if (*it->begin() - mario->x - 300 >= -55 && *it->begin() - mario->x - 300 <= -50 &&
+                   *(it->begin() + 1) - mary->y <= 45 && mary->direction == "left")
+        {
+            mario->can_move = false; // 禁止移动
+            return;
+        }
+    }
+    for (QVector<QVector<int>>::iterator it = pipe->short_m.begin()->begin(); it != pipe->short_m.begin()->end(); it++)
+    {
+        if (*it->begin() - mario->x - 300 >= 30 && *it->begin() - mario->x - 300 <= 35 &&
+            *(it->begin() + 1) < mario->y + 45 && mario->direction == "right")
+        {
+            mario->can_move = false; // 禁止移动
+            return;
+        }
+        else if (*it->begin() - mario->x - 300 >= -55 && *it->begin() - mario->x - 300 <= -50 &&
+                   *(it->begin() + 1) < mario->y + 45 && mario->direction == "left")
+        {
+            mario->can_move = false; // 禁止移动
+            return;
+        }
+    }
+
+}
+
+// 初始化死亡状态
+ void Game_Scene::Die_Init()
+{
+     if (mario->is_die && key != "null")
+    {
+         mario->walk_state = 0;
+         key = "null";
+     }
+     if (mario->invincible_state == 100)
+     {
+         mario->is_invincible = false;
+         mario->invincible_state = 0;
+     }
+     if (mario->is_invincible)
+     {
+         mario->invincible_state += 1;
+     }
+     //如果马里奥死了
+     if (mario->y > 500 && mario->life > 0)
+     {
+
+         mario->y = 455;
+         mario->life--;
+         killTimer(timer3);
+         killTimer(timer1);
+         game_start = false;
+         QTimer::singleShot(1500, this, [=]() {
+             mario->is_die = false;
+
+             mario->is_invincible = true;
+             timer1 = startTimer(15);//开启定时器
+             timer3 = startTimer(40);
+             game_start = true;
+             mario->die_state = 0;
+             mario->die_pix_state = -50;
+         });
+     }
+     if (mario->y > 500 && mario->life <= 0)
+     {
+         Game_Over();
+     }
+
+ }
+
+ // 游戏胜利处理弹出新窗口，显示游戏胜利（理想情况下可以做一段小视频）
+void Game_Scene::Game_Win(){
+    killTimer(timer1);
+    killTimer(timer3);
+    //暂停时间
+    QTimer::singleShot(1000, this, [=]() {
+        game_start = false;
+        Game_Pause *p = new Game_Pause;
+        p->show();
+
+        // time = 300.0;
+        update();
+    });
+    // QTimer::singleShot(1000, this, [=]() {
+    //     startTimer(timer1);
+    //     startTimer(timer3);
+    // });
+
+
+ }
+
+ //游戏失败处理
+ void Game_Scene::Game_Over(){
+    Game_Pause *p = new Game_Pause;
+    p->show();
+
+}
+
+//初始化重新开始游戏的函数
 void Game_Scene::Pause_Game_Init()
 {
-
+    key = "null";
+    score = 0;
+    time = 300.0;
+    is_press_x = false;
+    is_kill_timer2 = true;
+    game_start = false;
+    mario->Mario_Init();
+    unknown->Unknown_Init();
+    brick->BrickInit();
+    mushroom->MushRoom_Init();
+    master->Master_Init();
+    master->Master_State(mario, pipe, brick);
 }
