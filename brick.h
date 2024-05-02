@@ -8,7 +8,7 @@ class Brick
 {
 public:
     QVector<int> v;
-    QVector<QVector<int>> v2; // 储存坐标的二位容器
+    QVector<QVector<int>> v2; // 储存坐标的二维容器
     QMap<int, QVector<QVector<int>>> m;
 
     int left_shatter_x; // 左碎块的 x 坐标
@@ -17,7 +17,7 @@ public:
     int right_shatter_y; // 右碎块的 y 坐标
 
     //
-    //
+    //1
     int shatter_state; // 砖块的状态
 
     Brick(); // 构造函数声明

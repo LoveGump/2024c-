@@ -3,7 +3,7 @@
 Brick::Brick() {
 
     //初始化砖块
-      BrickInit();
+     BrickInit();
 }
 
 void Brick::BrickInit() {
@@ -87,12 +87,15 @@ void Brick::BrickShatter(QVector<QVector<int>>::iterator it)
     right_shatter_y = *(it->begin() + 1);
     //表示砖块的状态为破碎
     shatter_state = 1;
+
 }
 
 // 获取碎块状态的函数声明
-void Brick::ShatterState() {
+void Brick::ShatterState()
+{
     // 如果砖块未破碎，直接返回
-    if (shatter_state == 0) {
+    if (shatter_state == 0)
+    {
         return;
     }
 

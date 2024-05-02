@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
         //先触发动画
         start_Btn->zoom1();
         start_Btn->zoom2();
-       // start_Music->play(); // 播放声音
+        start_Music->play(); // 播放声音
         //  start_Music->play(); //结束播放
         //  之后等动画结束之后进入游戏
         QTimer::singleShot(500,this,[=](){

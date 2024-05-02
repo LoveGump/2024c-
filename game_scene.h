@@ -67,7 +67,7 @@ public:
      void Jump_Collision(); // 跳跃碰撞检测
      void Move_Collision(); // 移动碰撞检测
     void Game_Win(); // 游戏胜利处理
-    void Game_Over();//游戏失败处理
+   // void Game_Over();//游戏失败处理
 signals:
 };
 

@@ -1,8 +1,7 @@
 #include "game_scene.h"
-#include "mario.h"
 #include "my_pushbutton.h"
 #include "qtimer.h"
-#include "game_pause.h"
+
 
 Game_Scene::Game_Scene(QWidget *parent)
     : QWidget{parent}
@@ -54,7 +53,7 @@ void Game_Scene::Pause_Init()
     Pause = new Game_Pause();//初始化暂停窗口
 
     //链接继续游戏
-    connect(Pause->btn_continue, &QPushButton::clicked, this, [=]() {
+    connect(Pause->btn_continue, &QPushButton::clicked, this, [=](){
 
         QTimer::singleShot(500, this, [=]() {
             timer1 = startTimer(15);
@@ -95,33 +94,26 @@ void Game_Scene::keyPressEvent(QKeyEvent *event)
     {
         switch (event->key())
         {
-
         case Qt::Key_Right:
         case Qt::Key_D:
             mario->direction = "right";
             key = "right";
             break;
-
         case Qt::Key_Left:
         case Qt::Key_A:
             mario->direction ="left";
             key = "left";
             break;
-
-
-            //
-            //
+            //开始计时器2 用来加速
         case Qt::Key_Z:
             timer2 = startTimer(25);
             is_kill_timer2 = false;
             break;
-
         case Qt::Key_Space:
         case Qt::Key_W:
         case Qt::Key_Up:
             mario->is_jump = true;
             break;
-
         case Qt::Key_X:
             if (!is_press_x && !mario->is_jump && mario->is_jump_end && mario->colour == 3)
             {
@@ -190,10 +182,11 @@ void Game_Scene::keyReleaseEvent(QKeyEvent *event)
             {
                 mario->life++;
             }
+            break;
+
         }
     }
 }
-
 
 
 //绘制地图
@@ -373,18 +366,18 @@ void Game_Scene::timerEvent(QTimerEvent *event) // 定时器事件
         update();
         return;
     }
-    if (event->timerId() == timer1) {
+    if (event->timerId() == timer1)
+    {
         mario->Mario_Move(key);
         mario->Jump_And_Down();
-         Jump_Collision();
+        Jump_Collision();
         Move_Collision();
-         brick->ShatterState();
-         mushroom->Move_state();
-          master->Master_Move();
+        brick->ShatterState();
+        mushroom->Move_state();
+        master->Master_Move();
         Die_Init();
         Fall_Down(mario->y);
         //fire->Fire_state();
-
 
         update();//刷新屏幕
     }
@@ -397,65 +390,70 @@ void Game_Scene::timerEvent(QTimerEvent *event) // 定时器事件
     if (event->timerId() == timer3)
     {
         time -= 0.04;
-        //unknown->Unknown_State();
-        // unknown->Crash_state();
+        unknown->Unknown_State();
+        unknown->Crash_state();
     }
 }
 
+//检测是否落在什么东西的上面
 void Game_Scene::Fall_Down(int &y)
 {
     if (mario->height - mario->distance < 0)
     {
-        if (y > 455) {
+        //Mario落在地面
+        if (y > 455)
+        {
             y = 455;
-            mary->is_jump_end = true;
-            mary->distance = 0;
-            mary->height = 20;
+            mario->is_jump_end = true;
+            mario->distance = 0;
+            mario->height = 20;
             return;
         }
-        for (QVector < QVector < int >> ::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end();
-             it++)
+        //Mario落在砖块上面
+        for (QVector < QVector < int >> ::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end(); it++)
         {
-            if (*it->begin() - mary->x - 300 >= -30 && *it->begin() - mary->x - 300 <= 30 &&
-                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25 && *(it->begin() + 2) == 1) {
+
+            if (*it->begin() - mario->x - 300 >= -30 && *it->begin() - mario->x - 300 <= 30 &&
+                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25 && *(it->begin() + 2) == 1)
+            {
                 y = *(it->begin() + 1) - 45;
-                mary->is_jump_end = true;
-                mary->height = mary->distance = 20;
+                mario->is_jump_end = true;
+                mario->height = mario->distance = 20;
                 return;
             }
         }
-        for (QVector < QVector < int >> ::iterator it = unknown->m.begin()->begin(); it != unknown->m.begin()->end();
-             it++)
+        for (QVector < QVector < int >> ::iterator it = unknown->m.begin()->begin(); it != unknown->m.begin()->end();it++)
         {
-            if (*it->begin() - mary->x - 300 >= -30 && *it->begin() - mary->x - 300 <= 30 &&
-                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25) {
+            //Mario落在神秘方块上面
+            if (*it->begin() - mario->x - 300 >= -30 && *it->begin() - mario->x - 300 <= 30 &&
+                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25)
+            {
                 y = *(it->begin() + 1) - 45;
-                mary->is_jump_end = true;
-                mary->height = mary->distance = 20;
+                mario->is_jump_end = true;
+                mario->height = mario->distance = 20;
                 return;
             }
         }
-        for (QVector < QVector < int >> ::iterator it = pipe->long_m.begin()->begin(); it !=
-                                                                                 pipe->long_m.begin()->end();
-             it++)
+        //Mario落在管道上面
+        for (QVector < QVector < int >> ::iterator it = pipe->long_m.begin()->begin(); it !=pipe->long_m.begin()->end();it++)
         {
-            if (*it->begin() - mary->x - 300 >= -50 && *it->begin() - mary->x - 300 <= 30 &&
-                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25) {
+            if (*it->begin() - mario->x - 300 >= -50 && *it->begin() - mario->x - 300 <= 30 &&
+                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25)
+            {
                 y = *(it->begin() + 1) - 45;
-                mary->is_jump_end = true;
-                mary->height = mary->distance = 20;
+                mario->is_jump_end = true;
+                mario->height = mario->distance = 20;
                 return;
             }
         }
-        for (QVector < QVector < int >> ::iterator it = pipe->short_m.begin()->begin(); it !=
-                                                                                  pipe->short_m.begin()->end();
-             it++)
+        for (QVector < QVector < int >> ::iterator it = pipe->short_m.begin()->begin(); it != pipe->short_m.begin()->end();it++)
         {
-            if (*it->begin() - mary->x - 300 >= -50 && *it->begin() - mary->x - 300 <= 30 &&
-                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25) {
+            if (*it->begin() - mario->x - 300 >= -50 && *it->begin() - mario->x - 300 <= 30 &&
+                *(it->begin() + 1) <= y + 50 && *(it->begin() + 1) >= y + 25)
+            {
                 y = *(it->begin() + 1) - 45;
-                mary->is_jump_end = true;
-                mary->height = mary->distance = 20;
+                mario->is_jump_end = true;
+                mario->height = mario->distance = 20;
                 return;
             }
         }
@@ -466,18 +464,18 @@ void Game_Scene::Fall_Down(int &y)
 //检测mario移动过程中 是否 碰到 障碍物
 void Game_Scene::Move_Collision() {
     // 检测 mario 是否与砖块发生了碰撞
-    for (QVector<QVector<int>>::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end(); it++)
+    for (QVector < QVector <int> >::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end(); it++)
     {
         // 如果 mario 向右移动并且与砖块相交
         if (*it->begin() - mario->x - 300 >= 35 && *it->begin() - mario->x - 300 <= 40 &&
-            *(it->begin() + 1) - mario->y >= -35 && *(it->begin() + 1) - mario->y <= 35 &&
+            *(it->begin() + 1) > mario->y  -35 && *(it->begin() + 1) - mario->y < 35 &&
             mario->direction == "right" && *(it->begin() + 2) == 1)
         {
             mario->can_move = false; // 禁止移动
             return;
         }
         else if (*it->begin() - mario->x - 300 >= -40 && *it->begin() - mario->x - 300 <= -35 &&
-                   *(it->begin() + 1) - mario->y >= - 35 && *(it->begin() + 1) - mario->y <= 35 &&
+                   *(it->begin() + 1) - mario->y > - 35 && *(it->begin() + 1) - mario->y < 35 &&
                    mario->direction == "left" && *(it->begin() + 2) == 1)
         {
             mario->can_move = false; // 禁止移动
@@ -513,7 +511,7 @@ void Game_Scene::Move_Collision() {
             return;
         }
         else if (*it->begin() - mario->x - 300 >= -55 && *it->begin() - mario->x - 300 <= -50 &&
-                   *(it->begin() + 1) - mary->y <= 45 && mary->direction == "left")
+                   *(it->begin() + 1) - mario->y <= 45 && mario->direction == "left")
         {
             mario->can_move = false; // 禁止移动
             return;
@@ -534,8 +532,83 @@ void Game_Scene::Move_Collision() {
             return;
         }
     }
+    QVector < QVector < int >> ::iterator it = castle->m.begin()->begin();
+    if (*it->begin() - mario->x - 300 >= -60 && *it->begin() - mario->x - 300 <= -20 &&
+        *(it->begin() + 1) < mario->y - 100 && *(it->begin() + 1) > mario->y - 200) {
+
+        is_win = true;
+        Game_Win();
+    }
+    mario->can_move = true;
 
 }
+
+
+
+//检测mario跳跃过程中 是否 碰到 障碍物
+void Game_Scene::Jump_Collision() {
+    // 检查mario的跳跃高度是否为0或负值，如果是则直接返回，表示没有发生跳跃
+    if (mario->height - mario->distance <= 0)
+    {
+        return;
+    }
+
+    // 遍历砖块对象中的砖块，检测是否发生了碰撞
+    for (QVector<QVector<int>>::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end(); it++)
+    {
+        // 如果mario顶到砖块
+        if (*it->begin() - mario->x - 300 >= -30 && *it->begin() - mario->x - 300 <= 30 &&
+            *(it->begin() + 1) - mario->y + 40 >= -10 && *(it->begin() + 1) - mario->y + 40 <= 20 &&
+            *(it->begin() + 2) == 1) {
+            // 增加得分
+            score += 5;
+            // 碎裂砖块
+            brick->BrickShatter(it);
+            // 更新砖块状态
+            *(it->begin() + 2) = 0;
+            // 更新mario的位置
+
+            //让mario停留在碰撞的位置
+            mario->y = *(it->begin() + 1) + 40;
+            mario->height = mario->distance;
+            return;
+        }
+    }
+
+    // 遍历未知物体中的物体，检测是否发生了碰撞
+    for (QVector<QVector<int>>::iterator it = unknown->m.begin()->begin(); it != unknown->m.begin()->end(); it++)
+    {
+        // 如果mario顶到神秘方块
+        if (*it->begin() - mario->x - 300 >= -30 && *it->begin() - mario->x - 300 <= 30 &&
+            *(it->begin() + 1) + 40 - mario->y  >= -10 && *(it->begin() + 1) + 40 - mario->y  <= 20) {
+            // 如果神秘方块类型为金币（假设值为1）
+            if (*(it->begin() + 2) == 1) {
+                // 增加金币数量
+                unknown->coin++;
+                // 增加得分
+                score += 10;
+                // 执行神秘方块的碰撞动作（产生金币）
+                //
+                unknown->Unknown_crash(it);
+            }
+            // 如果神秘方块 类型为蘑菇（假设值为2）
+            else if (*(it->begin() + 2) == 2) {
+                // 出现蘑菇 并让蘑菇移动
+                mushroom->MushRoom_Move(it, unknown, brick, mario);
+            }
+            // 更新Mario的位置
+            mario->y = *(it->begin() + 1) + 40;
+            // 更新神秘方块的状态（变得不神秘）
+            *(it->begin() + 2) = 0;
+
+            // 更新Mario的高度
+            mario->height = mario->distance;
+            return;
+        }
+    }
+}
+
+
 
 // 初始化死亡状态
  void Game_Scene::Die_Init()
@@ -574,40 +647,36 @@ void Game_Scene::Move_Collision() {
              mario->die_pix_state = -50;
          });
      }
-     if (mario->y > 500 && mario->life <= 0)
-     {
-         Game_Over();
-     }
+     // if (mario->y > 500 && mario->life <= 0)
+     // {
+     //     Game_Over();
+     // }
 
  }
 
  // 游戏胜利处理弹出新窗口，显示游戏胜利（理想情况下可以做一段小视频）
-void Game_Scene::Game_Win(){
-    killTimer(timer1);
-    killTimer(timer3);
-    //暂停时间
-    QTimer::singleShot(1000, this, [=]() {
-        game_start = false;
-        Game_Pause *p = new Game_Pause;
-        p->show();
-
-        // time = 300.0;
-        update();
-    });
-    // QTimer::singleShot(1000, this, [=]() {
-    //     startTimer(timer1);
-    //     startTimer(timer3);
-    // });
-
+ void Game_Scene::Game_Win() {
+     killTimer(timer1);
+     killTimer(timer3);
+     QTimer::singleShot(1000, this, [=]() {
+         game_start = false;
+         time = 300.0;
+         update();
+     });
+     QTimer::singleShot(1000, this, [=]() {
+         startTimer(timer1);
+         startTimer(timer3);
+     });
 
  }
 
- //游戏失败处理
- void Game_Scene::Game_Over(){
-    Game_Pause *p = new Game_Pause;
-    p->show();
+//  //游戏失败处理
+//  void Game_Scene::Game_Over()
+//  {
+//     Game_Pause *p = new Game_Pause;
+//     p->show();
 
-}
+// }
 
 //初始化重新开始游戏的函数
 void Game_Scene::Pause_Game_Init()
