@@ -1,8 +1,4 @@
 #include "mainwindow.h"
-#include "game_help.h"
-#include"game_scene.h"
-#include "my_pushbutton.h"
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -16,38 +12,52 @@ MainWindow::MainWindow(QWidget *parent)
     //设置图标
     QApplication::setWindowIcon(QIcon(":/photo/icon.png"));
     //设置开始游戏按钮
-    My_PushButton *start_Btn = new My_PushButton(":/photo/start3.png");
+    start_Btn = new My_PushButton(":/photo/start3.png");
     //设置父类
     start_Btn->setParent(this);
     //设置开始按钮坐标
     start_Btn->move(100,this->height()*0.25);
-    // 创建声音效果对象
-    QSoundEffect *start_Music=new QSoundEffect;
-    // 设置音频文件的路径
-    start_Music->setSource(QUrl::fromLocalFile(":/music/start.wav"));
 
-    start_Music->setLoopCount(QSoundEffect::Infinite);  //设置无限循环
-    start_Music->setVolume(0.5f);  //设置音量，在0到1之间
+
+    // 创建声音效果对象
+    background_Music = new QSoundEffect;
+    // 设置音频文件的路径
+    background_Music->setSource(QUrl::fromLocalFile(":/music/start.wav"));
+    // QUrl::fromLocalFile(":/music/start.wav")
+    background_Music->setLoopCount(QSoundEffect::Infinite);  //设置无限循环
+    background_Music->setVolume(0.5f);  //设置音量，在0到1之间
+    background_Music->play(); // 播放声音
+
+    stage_clear_Music = new QSoundEffect;
+    stage_clear_Music->setSource(QUrl::fromLocalFile(":/music/stage_clear.wav"));
+    stage_clear_Music->setVolume(0.5f);
+
 
     //设置按下按钮之后的事件
     connect(start_Btn, &QPushButton::clicked, [=](){
         //先触发动画
         start_Btn->zoom1();
         start_Btn->zoom2();
-        start_Music->play(); // 播放声音
-        //  start_Music->play(); //结束播放
-        //  之后等动画结束之后进入游戏
+
+        background_Music->stop(); //结束播放
+
         QTimer::singleShot(500,this,[=](){
             this->hide();
-            Game_Scene *gamescene=new Game_Scene;
+            stage_clear_Music->play();
+
+            gamescene = new Game_Scene;
             gamescene->show();
+            QTimer::singleShot(1500, this, [=]() {
+                stage_clear_Music->stop();
+
+            });
 
         });
     });
 
 
     //设置帮助按钮
-    My_PushButton *help_Btn=new My_PushButton(":/photo/help3.png");
+    help_Btn = new My_PushButton(":/photo/help3.png");
     help_Btn->setParent(this);
     help_Btn->move(100,this->height()*0.40);
     connect(help_Btn,&QPushButton::clicked,[=](){
@@ -56,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
         QTimer::singleShot(400,this,[=](){
 
             this->hide();
-            game_help *gamehelp=new game_help();
+            gamehelp = new game_help();
             gamehelp->show();
          connect(gamehelp,&game_help::back,this,[=](){
                 this->show();
@@ -65,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     //设置结束按钮
-    My_PushButton *end_Btn=new My_PushButton(":/photo/end3.png");
+   end_Btn = new My_PushButton(":/photo/end3.png");
     end_Btn->setParent(this);
     end_Btn->move(100,this->height()*0.55);
     connect(end_Btn,&QPushButton::clicked,[=](){

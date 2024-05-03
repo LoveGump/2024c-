@@ -6,8 +6,9 @@
 #include<QTimer>
 #include "ui_mainwindow.h"
 #include <QSoundEffect>
-//#include"mypushbutton.h"
-//#include"gamescene.h"
+#include"my_pushbutton.h"
+#include"game_scene.h"
+#include"game_help.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,6 +22,20 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+    //添加开始游戏按钮
+    My_PushButton *start_Btn;
+    //添加帮助按钮
+    My_PushButton *help_Btn;
+    //添加结束按钮
+    My_PushButton *end_Btn;
+    //开始游戏的界面
+    Game_Scene *gamescene;
+    //帮助文档的界面
+    game_help *gamehelp;
+
+    QSoundEffect *background_Music;
+    //进入游戏过程中的音乐
+    QSoundEffect *stage_clear_Music;
 
     ~MainWindow();
 

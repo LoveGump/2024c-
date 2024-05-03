@@ -66,5 +66,10 @@
         <file>photo/help3.png</file>
         <file>photo/start3.png</file>
         <file>photo/sky1.jpg</file>
+        <file>music/my_pushbutton_press.wav</file>
+        <file>music/game_over.wav</file>
+        <file>music/invincible.wav</file>
+        <file>music/main_theme.wav</file>
+        <file>music/main_theme_sped_up.wav</file>
     </qresource>
 </RCC>

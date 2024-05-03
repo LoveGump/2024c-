@@ -14,6 +14,7 @@ SOURCES += \
     brick.cpp \
     castle.cpp \
     game_help.cpp \
+    game_over.cpp \
     game_pause.cpp \
     game_scene.cpp \
     main.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     brick.h \
     castle.h \
     game_help.h \
+    game_over.h \
     game_pause.h \
     game_scene.h \
     mainwindow.h \

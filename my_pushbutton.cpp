@@ -1,4 +1,6 @@
 #include "my_pushbutton.h"
+#include<QMouseEvent>
+#include<QDebug>
 
 My_PushButton::My_PushButton(QString normalImg) {
 
@@ -20,6 +22,11 @@ My_PushButton::My_PushButton(QString normalImg) {
 
     // 设置按钮图标的大小为 200x100 像素
     this->setIconSize(QSize(200, 100));
+
+    mouse_Press_Music = new QSoundEffect;
+    mouse_Press_Music->setSource(QUrl::fromLocalFile(":/music/my_pushbutton_press.wav"));
+    mouse_Press_Music->setVolume(0.5f);
+
 }
 
 //点击动画效果1
@@ -61,4 +68,16 @@ void My_PushButton::zoom2() {
 
     // 启动动画
     animation->start();
+}
+
+//重写鼠标按下函数
+void My_PushButton::mousePressEvent(QMouseEvent *event)
+{
+    // 按钮被按下时播放音效
+    if (event->button() == Qt::LeftButton) {
+        qDebug()<<1;
+        mouse_Press_Music->play();
+    }
+    // 调用父类的事件处理函数
+    QPushButton::mousePressEvent(event);
 }

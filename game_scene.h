@@ -18,6 +18,8 @@
 #include"unkown_surprise.h"
 #include"mushroom.h"
 #include"castle.h"
+#include <QSoundEffect>
+
 
 class Game_Scene : public QWidget
 {
@@ -52,6 +54,19 @@ public:
     Master *master;
     Castle *castle;
     // Fire *fire;
+    //普通背景音乐
+    QSoundEffect *main_theme_Music;
+    //死亡音乐
+    QSoundEffect *death_Music;
+    //游戏结束 生命用光的音乐
+    QSoundEffect *gameOver_Music;
+    //变颜色之后的音乐
+    QSoundEffect *invincible_Music;
+    //加速之后的音乐
+    QSoundEffect *main_theme_sped_up_Music;
+    //超时的音乐
+    QSoundEffect *background_Music;
+
 
     void paintEvent(QPaintEvent *); // 绘图事件
     void keyPressEvent(QKeyEvent *event); // 键盘按下事件
@@ -67,7 +82,8 @@ public:
      void Jump_Collision(); // 跳跃碰撞检测
      void Move_Collision(); // 移动碰撞检测
     void Game_Win(); // 游戏胜利处理
-   // void Game_Over();//游戏失败处理
+    void Game_Over();//游戏失败处理
+    void Music_Init();
 signals:
 };
 

@@ -2,6 +2,8 @@
 #include "my_pushbutton.h"
 #include "qtimer.h"
 #include<QDebug>
+#include<QSoundEffect>
+#include"mainwindow.h"
 
 Game_Scene::Game_Scene(QWidget *parent)
     : QWidget{parent}
@@ -18,7 +20,7 @@ Game_Scene::Game_Scene(QWidget *parent)
 
         timer1 = startTimer(15);
         timer3 = startTimer(40);
-        qDebug()<<1;
+
         game_start = true;
     });
 }
@@ -45,7 +47,6 @@ void Game_Scene::Game_Init()// 初始化游戏
 
     is_kill_timer2 = true;
     game_start = false;
-
     master->Master_State(mario, pipe, brick);
 }
 
@@ -87,6 +88,40 @@ void Game_Scene::Pause_Init()
         });
     });
 
+}
+
+//初始化音乐
+void Game_Scene::Music_Init()
+{
+    //普通背景音乐
+    main_theme_Music = new QSoundEffect;
+    main_theme_Music->setSource(QUrl::fromLocalFile(":/music/main_theme.mp3"));
+    main_theme_Music->setLoopCount(QSoundEffect::Infinite);//无限循环
+    main_theme_Music->setVolume(0.5f);
+
+    //死亡音乐
+    death_Music = new QSoundEffect;
+    invincible_Music->setSource(QUrl::fromLocalFile(":/music/death.wav"));
+    invincible_Music->setVolume(0.5f);
+    //游戏结束 生命用光的音乐
+    gameOver_Music = new QSoundEffect;
+    invincible_Music->setSource(QUrl::fromLocalFile(":/music/game_over.mp3"));
+    invincible_Music->setVolume(0.5f);
+    //变颜色之后的音乐
+    invincible_Music = new QSoundEffect;
+    invincible_Music->setSource(QUrl::fromLocalFile(":/music/invincible.mp3"));
+    invincible_Music->setLoopCount(QSoundEffect::Infinite);//无限循环
+    invincible_Music->setVolume(0.5f);
+    //加速之后的音乐
+    main_theme_sped_up_Music = new QSoundEffect;
+    main_theme_sped_up_Music->setSource(QUrl::fromLocalFile(":/music/main_theme_sped_up.mp3"));
+    main_theme_sped_up_Music->setLoopCount(QSoundEffect::Infinite);//无限循环
+    main_theme_sped_up_Music->setVolume(0.5f);
+    //超时的音乐
+
+    background_Music = new QSoundEffect;
+    invincible_Music->setSource(QUrl::fromLocalFile(":/music/out_of_time.wav"));
+    invincible_Music->setVolume(0.5f);
 }
 
 //按键函数 按下按键 执行相应的函数
@@ -175,8 +210,11 @@ void Game_Scene::keyReleaseEvent(QKeyEvent *event)
                 }
                 //关闭计时器3
                 killTimer(timer3);
+                // Game_Pause *Pause = new Game_Pause();
                 Pause->setParent(this);
-                Pause->open();
+                Pause->exec();
+                delete Pause;
+                Pause_Init();
             }
             break;
         case Qt::Key_C:
@@ -211,8 +249,7 @@ void Game_Scene::paintEvent(QPaintEvent *)
         painter.drawText(720, 40, QString::number(unknown->coin)); // 绘制金币数量
         font.setPointSize(45); // 设置字体大小
         painter.setFont(font); // 设置字体
-        painter.drawText(400, 287, QString::number(mario->life)); // 绘制生命值
-        qDebug()<<mario->life;
+        painter.drawText(400, 287, QString::number(mario->life)); // 绘制生命值       
         return;
     }
 
@@ -355,10 +392,6 @@ void Game_Scene::paintEvent(QPaintEvent *)
 
 }
 
-
-
-
-
 void Game_Scene::timerEvent(QTimerEvent *event) // 定时器事件
 {
     if (event->timerId() == timer1 && mario->is_die)
@@ -370,26 +403,26 @@ void Game_Scene::timerEvent(QTimerEvent *event) // 定时器事件
     }
     if (event->timerId() == timer1)
     {
-         qDebug()<<2;
+
         mario->Mario_Move(key);
-          qDebug()<<1;
+
         mario->Jump_And_Down();
-           qDebug()<<1;
+
         Jump_Collision();
-            qDebug()<<3;
+
         Move_Collision();
-             qDebug()<<2;
+
         brick->ShatterState();
-              qDebug()<<1;
+
         mushroom->Move_state();
-               qDebug()<<1;
+
         master->Master_Move();
-                qDebug()<<1;
+
         Die_Init();
-                 qDebug()<<1;
+
         Fall_Down(mario->y);
         //fire->Fire_state();
- qDebug()<<1;
+
         update();//刷新屏幕
     }
 
@@ -397,13 +430,31 @@ void Game_Scene::timerEvent(QTimerEvent *event) // 定时器事件
     {
         mario->Mario_Move(key);
     }
-
+    //数据更新频率
     if (event->timerId() == timer3)
     {
         time -= 0.04;
+
+        if(time<=0)
+        {
+            //超时
+
+
+            killTimer(timer1);
+            if (is_kill_timer2)
+            {
+                //关闭计时器2
+                killTimer(timer2);
+            }
+            //关闭计时器3
+            killTimer(timer3);
+            Game_Over();
+        }
         unknown->Unknown_State();
         unknown->Crash_state();
     }
+
+
 }
 
 //检测是否落在什么东西的上面
@@ -474,7 +525,7 @@ void Game_Scene::Fall_Down(int &y)
 
 //检测mario移动过程中 是否 碰到 障碍物
 void Game_Scene::Move_Collision() {
-     qDebug()<<1;
+
     // 检测 mario 是否与砖块发生了碰撞
     for (QVector < QVector <int> >::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end(); it++)
     {
@@ -494,7 +545,7 @@ void Game_Scene::Move_Collision() {
             return;
         }
     }
-     qDebug()<<1;
+
     // 检测mario是否与神秘方块发生了碰撞
     for (QVector<QVector<int>>::iterator it = unknown->m.begin()->begin(); it != unknown->m.begin()->end(); it++)
     {
@@ -513,7 +564,7 @@ void Game_Scene::Move_Collision() {
             return;
         }
     }
-     qDebug()<<2;
+
     // 检测mario 是否与水管发生了碰撞
     for (QVector<QVector<int>>::iterator it = pipe->long_m.begin()->begin(); it != pipe->long_m.begin()->end(); it++)
     {
@@ -531,7 +582,7 @@ void Game_Scene::Move_Collision() {
             return;
         }
     }
-     qDebug()<<2;
+
     for (QVector<QVector<int>>::iterator it = pipe->short_m.begin()->begin(); it != pipe->short_m.begin()->end(); it++)
     {
         if (*it->begin() - mario->x - 300 >= 30 && *it->begin() - mario->x - 300 <= 35 &&
@@ -547,7 +598,7 @@ void Game_Scene::Move_Collision() {
             return;
         }
     }
-     qDebug()<<2;
+
     QVector < QVector < int >> ::iterator it = castle->m.begin()->begin();
     if (*it->begin() - mario->x - 300 >= -60 && *it->begin() - mario->x - 300 <= -20 &&
         *(it->begin() + 1) < mario->y - 100 && *(it->begin() + 1) > mario->y - 200) {
@@ -664,10 +715,21 @@ void Game_Scene::Jump_Collision() {
              mario->die_pix_state = -50;
          });
      }
-     // if (mario->y > 500 && mario->life <= 0)
-     // {
-     //     Game_Over();
-     // }
+
+
+     //如果生命死光了
+     if (mario->y > 500 && mario->life <= 0)
+     {
+         killTimer(timer1);
+         if (is_kill_timer2)
+         {
+             //关闭计时器2
+             killTimer(timer2);
+         }
+         //关闭计时器3
+         killTimer(timer3);
+         Game_Over();
+     }
 
  }
 
@@ -687,13 +749,15 @@ void Game_Scene::Jump_Collision() {
 
  }
 
-//  //游戏失败处理
-//  void Game_Scene::Game_Over()
-//  {
-//     Game_Pause *p = new Game_Pause;
-//     p->show();
 
-// }
+
+ //游戏失败处理
+ void Game_Scene::Game_Over()
+ {
+    Game_Pause *p = new Game_Pause;
+    p->show();
+
+}
 
 //初始化重新开始游戏的函数
 void Game_Scene::Pause_Game_Init()

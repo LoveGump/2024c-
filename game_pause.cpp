@@ -44,6 +44,7 @@ Game_Pause::Game_Pause() {
         btn_exit->zoom1();
         btn_exit->zoom2();
     });
+
     // 设置焦点策略为StrongFocus，确保窗口接收键盘事件
     setFocusPolicy(Qt::StrongFocus);
 
