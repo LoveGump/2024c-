@@ -71,6 +71,15 @@ public:
     //超时的音乐
     QSoundEffect *Out_of_Time_Music;
 
+    //砖块破碎
+    QSoundEffect *brick_Break_Music;
+    //游戏胜利
+    QSoundEffect *Game_Win_Music;
+    //获得金币
+    QSoundEffect *Coin_Music;
+    //出现蘑菇
+    QSoundEffect *Mushroom_Music;
+
 
 
 

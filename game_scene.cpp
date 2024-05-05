@@ -125,14 +125,36 @@ void Game_Scene::Music_Init()
     invincible_Music->setVolume(0.5f);
     //加速之后的音乐
     main_theme_sped_up_Music = new QSoundEffect;
-    main_theme_sped_up_Music->setSource(QUrl::fromLocalFile(":/music/main_theme_sped_up.mp3"));
+    main_theme_sped_up_Music->setSource(QUrl::fromLocalFile(":/music/main_theme_sped_up.wav"));
     main_theme_sped_up_Music->setLoopCount(QSoundEffect::Infinite);//无限循环
     main_theme_sped_up_Music->setVolume(0.5f);
     //超时的音乐
-
     Out_of_Time_Music = new QSoundEffect;
     Out_of_Time_Music->setSource(QUrl::fromLocalFile(":/music/out_of_time.wav"));
     Out_of_Time_Music->setVolume(0.5f);
+
+
+    //砖块破碎
+    brick_Break_Music = new QSoundEffect;
+    brick_Break_Music->setSource(QUrl::fromLocalFile(":/music/break.wav"));
+    brick_Break_Music->setVolume(0.5f);
+    //游戏胜利
+    Game_Win_Music = new QSoundEffect;
+    Game_Win_Music->setSource(QUrl::fromLocalFile(":/music/win.wav"));
+    Game_Win_Music->setVolume(0.5f);
+
+    //获得金币
+    Coin_Music = new QSoundEffect;
+    Coin_Music->setSource(QUrl::fromLocalFile(":/music/coin.wav"));
+    Coin_Music->setVolume(0.5f);
+    //出现蘑菇
+    Mushroom_Music = new QSoundEffect;
+    Mushroom_Music->setSource(QUrl::fromLocalFile(":/music/mushroom.wav"));
+   Mushroom_Music->setVolume(0.5f);
+
+
+
+
 }
 
 //按键函数 按下按键 执行相应的函数
@@ -205,6 +227,7 @@ void Game_Scene::keyReleaseEvent(QKeyEvent *event)
         case Qt::Key_Space:
         case Qt::Key_W:
         case Qt::Key_Up:
+
             mario->is_jump = false;
             mario->is_space_release = true;
             break;
@@ -268,7 +291,7 @@ void Game_Scene::paintEvent(QPaintEvent *)
         painter.setFont(font); // 设置字体
         painter.drawText(400, 287, QString::number(mario->life)); // 绘制生命值
 
-        qDebug()<<"WW";
+
         return;
 
     }
@@ -551,7 +574,7 @@ void Game_Scene::Fall_Down(int &y)
 }
 
 
-//检测mario移动过程中 是否 碰到 障碍物
+//检测mari平移过程中 是否 碰到 障碍物
 void Game_Scene::Move_Collision() {
 
     // 检测 mario 是否与砖块发生了碰撞
@@ -585,8 +608,8 @@ void Game_Scene::Move_Collision() {
             return;
         }
         else if (*it->begin() - mario->x - 300 >= -40 && *it->begin() - mario->x - 300 <= -35 &&
-                   *(it->begin() + 1) - mario->y >= -35 && *(it->begin() + 1) - mario->y >= 35 &&
-                 mario->direction == "left")
+                 *(it->begin() + 1) - mario->y > - 35 && *(it->begin() + 1) - mario->y < 35 &&
+                 mario->direction == "left" && *(it->begin() + 2) == 1)
         {
             mario->can_move = false; // 禁止移动
             return;
@@ -626,14 +649,19 @@ void Game_Scene::Move_Collision() {
             return;
         }
     }
-
+//检测与城堡的接触
     QVector < QVector < int >> ::iterator it = castle->m.begin()->begin();
     if (*it->begin() - mario->x - 300 >= -60 && *it->begin() - mario->x - 300 <= -20 &&
         *(it->begin() + 1) < mario->y - 100 && *(it->begin() + 1) > mario->y - 200) {
 
         is_win = true;
-         qDebug()<<1;
-        Game_Win();
+        main_theme_Music->stop();
+        Game_Win_Music->play();
+        QTimer::singleShot(500, this, [=]() {
+            Game_Win();
+        });
+
+
     }
     mario->can_move = true;
 
@@ -660,6 +688,8 @@ void Game_Scene::Jump_Collision() {
             score += 5;
             // 碎裂砖块
             brick->BrickShatter(it);
+            //设置砖块破碎音效
+            brick_Break_Music->play();
             // 更新砖块状态
             *(it->begin() + 2) = 0;
             // 更新mario的位置
@@ -671,7 +701,7 @@ void Game_Scene::Jump_Collision() {
         }
     }
 
-    // 遍历未知物体中的物体，检测是否发生了碰撞
+    // 遍历神秘方块中的物体，检测是否发生了碰撞
     for (QVector<QVector<int>>::iterator it = unknown->m.begin()->begin(); it != unknown->m.begin()->end(); it++)
     {
         // 如果mario顶到神秘方块
@@ -679,6 +709,8 @@ void Game_Scene::Jump_Collision() {
             *(it->begin() + 1) + 40 - mario->y  >= -10 && *(it->begin() + 1) + 40 - mario->y  <= 20) {
             // 如果神秘方块类型为金币（假设值为1）
             if (*(it->begin() + 2) == 1) {
+                //
+                Coin_Music->play();
                 // 增加金币数量
                 unknown->coin++;
                 // 增加得分
@@ -690,6 +722,7 @@ void Game_Scene::Jump_Collision() {
             // 如果神秘方块 类型为蘑菇（假设值为2）
             else if (*(it->begin() + 2) == 2) {
                 // 出现蘑菇 并让蘑菇移动
+                Mushroom_Music->play();
                 mushroom->MushRoom_Move(it, unknown, brick, mario);
             }
             // 更新Mario的位置
@@ -771,8 +804,7 @@ void Game_Scene::Jump_Collision() {
  // 游戏胜利处理弹出新窗口，显示游戏胜利（理想情况下可以做一段小视频）
  void Game_Scene::Game_Win()
  {
-     main_theme_Music->stop();
-//
+
      //
      killTimer(timer1);
      if (is_kill_timer2)

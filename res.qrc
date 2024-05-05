@@ -2,19 +2,16 @@
     <qresource prefix="/">
         <file>photo/.DS_Store</file>
         <file>photo/back.png</file>
-        <file>photo/background1.jpg</file>
         <file>photo/blackground2.png</file>
         <file>photo/brick1.png</file>
         <file>photo/brick2.png</file>
         <file>photo/brick3.png</file>
         <file>photo/coin.png</file>
-        <file>photo/continueGame.png</file>
         <file>photo/dlg.png</file>
         <file>photo/fire.png</file>
         <file>photo/flag.png</file>
         <file>photo/flag2.png</file>
         <file>photo/FlagMary.png</file>
-        <file>photo/gamehelp.png</file>
         <file>photo/gameover.png</file>
         <file>photo/ground.png</file>
         <file>photo/icon.icns</file>
@@ -37,7 +34,6 @@
         <file>photo/walk_right1.png</file>
         <file>photo/walk_right2.png</file>
         <file>photo/walk_right3.png</file>
-        <file>photo/end.png</file>
         <file>photo/background.jpg</file>
         <file>music/course_clear.wav</file>
         <file>music/death.wav</file>
@@ -56,10 +52,16 @@
         <file>music/main_theme.wav</file>
         <file>music/main_theme_sped_up.wav</file>
         <file>photo/continueGame1.png</file>
-        <file>photo/game_help.png</file>
         <file>photo/initGame1.png</file>
         <file>photo/Exit.png</file>
         <file>photo/Game_Win.png</file>
         <file>photo/back1.png</file>
+        <file>photo/castle.png</file>
+        <file>music/break.wav</file>
+        <file>music/jump.wav</file>
+        <file>music/win.wav</file>
+        <file>music/coin.wav</file>
+        <file>music/mushroom.wav</file>
+        <file>photo/help.png</file>
     </qresource>
 </RCC>

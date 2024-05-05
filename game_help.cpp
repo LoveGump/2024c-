@@ -28,5 +28,5 @@ game_help::game_help(QWidget *parent)
 void game_help::paintEvent(QPaintEvent *) {
     QPainter painter(this);
     //绘制背景
-    painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/gamehelp.png"));
+    painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/help.png"));
 }
