@@ -61,5 +61,6 @@
         <file>photo/Exit.png</file>
         <file>photo/Game_Win.png</file>
         <file>photo/back1.png</file>
+        <file>photo/castle.png</file>
     </qresource>
 </RCC>

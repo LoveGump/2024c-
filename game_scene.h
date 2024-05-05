@@ -19,6 +19,8 @@
 #include"mushroom.h"
 #include"castle.h"
 #include <QSoundEffect>
+#include "game_win.h"
+//#include"mainwindow.h"
 
 
 class Game_Scene : public QWidget
@@ -44,6 +46,8 @@ public:
 
     QString key; // 按键状态
     Game_Pause *Pause; // 游戏暂停对象
+    Game_Win_dialog *win;
+   // QMainWindow *mainWindow;
 
 
     Mario *mario;    //创建角色对象
@@ -58,14 +62,17 @@ public:
     QSoundEffect *main_theme_Music;
     //死亡音乐
     QSoundEffect *death_Music;
-    //游戏结束 生命用光的音乐
-    QSoundEffect *gameOver_Music;
+    //游戏结束 生命用 光的音乐
+    QSoundEffect *Out_of_Life_Music;
     //变颜色之后的音乐
     QSoundEffect *invincible_Music;
     //加速之后的音乐
     QSoundEffect *main_theme_sped_up_Music;
     //超时的音乐
-    QSoundEffect *background_Music;
+    QSoundEffect *Out_of_Time_Music;
+
+
+
 
 
     void paintEvent(QPaintEvent *); // 绘图事件
@@ -85,6 +92,7 @@ public:
     void Game_Over();//游戏失败处理
     void Music_Init();
 signals:
+    void back();
 };
 
 #endif // GAME_SCENE_H

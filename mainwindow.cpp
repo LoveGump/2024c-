@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -46,14 +47,20 @@ MainWindow::MainWindow(QWidget *parent)
             stage_clear_Music->play();
 
             gamescene = new Game_Scene;
+
             gamescene->show();
             QTimer::singleShot(1500, this, [=]() {
                 stage_clear_Music->stop();
 
             });
+            connect(gamescene,&Game_Scene::back,this,[=](){
+                this->show();
+                background_Music->play();
+            });
 
         });
     });
+
 
 
     //设置帮助按钮

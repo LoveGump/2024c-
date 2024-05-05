@@ -2,8 +2,9 @@
 #include "my_pushbutton.h"
 #include "qtimer.h"
 #include<QDebug>
-#include<QSoundEffect>
+
 #include"mainwindow.h"
+#include"game_win.h"
 
 Game_Scene::Game_Scene(QWidget *parent)
     : QWidget{parent}
@@ -12,8 +13,11 @@ Game_Scene::Game_Scene(QWidget *parent)
     setWindowTitle("超级马里奥");
     setFixedSize(800, 545);
 
+     Music_Init();
     Game_Init();
     Pause_Init();
+
+
 
     //显示1.5秒界面之后，开始游戏
     QTimer::singleShot(1500, this, [=]() {
@@ -35,6 +39,11 @@ void Game_Scene::Game_Init()// 初始化游戏
     mushroom = new MushRoom;
     master = new Master;
     castle = new Castle;
+
+    QTimer::singleShot(1500, this, [=]() {
+        main_theme_Music->play();
+    });
+
 
     //fire = new Fire;
     //fire->Fire_Move(mary, pipe, brick, master);
@@ -84,7 +93,9 @@ void Game_Scene::Pause_Init()
     connect(Pause->btn_exit, &QPushButton::clicked, this, [=]() {
 
         QTimer::singleShot(500, this, [=]() {
-            this->close();
+
+        //    mainWindow->show();
+            this->hide();
         });
     });
 
@@ -95,18 +106,18 @@ void Game_Scene::Music_Init()
 {
     //普通背景音乐
     main_theme_Music = new QSoundEffect;
-    main_theme_Music->setSource(QUrl::fromLocalFile(":/music/main_theme.mp3"));
+    main_theme_Music->setSource (QUrl::fromLocalFile(":/music/main_theme.wav"));
     main_theme_Music->setLoopCount(QSoundEffect::Infinite);//无限循环
     main_theme_Music->setVolume(0.5f);
 
     //死亡音乐
     death_Music = new QSoundEffect;
-    invincible_Music->setSource(QUrl::fromLocalFile(":/music/death.wav"));
-    invincible_Music->setVolume(0.5f);
+    death_Music->setSource(QUrl::fromLocalFile(":/music/death.wav"));
+    death_Music->setVolume(0.5f);
     //游戏结束 生命用光的音乐
-    gameOver_Music = new QSoundEffect;
-    invincible_Music->setSource(QUrl::fromLocalFile(":/music/game_over.mp3"));
-    invincible_Music->setVolume(0.5f);
+    Out_of_Time_Music = new QSoundEffect;
+    Out_of_Time_Music->setSource(QUrl::fromLocalFile(":/music/game_over.wav"));
+    Out_of_Time_Music->setVolume(0.5f);
     //变颜色之后的音乐
     invincible_Music = new QSoundEffect;
     invincible_Music->setSource(QUrl::fromLocalFile(":/music/invincible.mp3"));
@@ -119,9 +130,9 @@ void Game_Scene::Music_Init()
     main_theme_sped_up_Music->setVolume(0.5f);
     //超时的音乐
 
-    background_Music = new QSoundEffect;
-    invincible_Music->setSource(QUrl::fromLocalFile(":/music/out_of_time.wav"));
-    invincible_Music->setVolume(0.5f);
+    Out_of_Time_Music = new QSoundEffect;
+    Out_of_Time_Music->setSource(QUrl::fromLocalFile(":/music/out_of_time.wav"));
+    Out_of_Time_Music->setVolume(0.5f);
 }
 
 //按键函数 按下按键 执行相应的函数
@@ -143,6 +154,8 @@ void Game_Scene::keyPressEvent(QKeyEvent *event)
             break;
             //开始计时器2 用来加速
         case Qt::Key_Z:
+            main_theme_Music->stop();
+            main_theme_sped_up_Music->play();
             timer2 = startTimer(25);
             is_kill_timer2 = false;
             break;
@@ -182,6 +195,8 @@ void Game_Scene::keyReleaseEvent(QKeyEvent *event)
             break;
             //关闭计时器2
         case Qt::Key_Z:
+            main_theme_sped_up_Music->stop();
+            main_theme_Music->play();
             is_kill_timer2 = true;
             killTimer(timer2);
             break;
@@ -208,12 +223,14 @@ void Game_Scene::keyReleaseEvent(QKeyEvent *event)
                     //关闭计时器2
                     killTimer(timer2);
                 }
+                main_theme_Music->stop();
                 //关闭计时器3
                 killTimer(timer3);
                 // Game_Pause *Pause = new Game_Pause();
                 Pause->setParent(this);
                 Pause->exec();
                 delete Pause;
+                main_theme_Music->play();
                 Pause_Init();
             }
             break;
@@ -249,8 +266,11 @@ void Game_Scene::paintEvent(QPaintEvent *)
         painter.drawText(720, 40, QString::number(unknown->coin)); // 绘制金币数量
         font.setPointSize(45); // 设置字体大小
         painter.setFont(font); // 设置字体
-        painter.drawText(400, 287, QString::number(mario->life)); // 绘制生命值       
+        painter.drawText(400, 287, QString::number(mario->life)); // 绘制生命值
+
+        qDebug()<<"WW";
         return;
+
     }
 
     painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/sky1.jpg"));//画背景
@@ -440,6 +460,7 @@ void Game_Scene::timerEvent(QTimerEvent *event) // 定时器事件
             //超时
 
 
+
             killTimer(timer1);
             if (is_kill_timer2)
             {
@@ -448,7 +469,14 @@ void Game_Scene::timerEvent(QTimerEvent *event) // 定时器事件
             }
             //关闭计时器3
             killTimer(timer3);
+            main_theme_Music->stop();
+            Out_of_Time_Music->play();
+            QTimer::singleShot(3000, this, [=](){
+                Out_of_Time_Music->stop();
+
+            } );
             Game_Over();
+
         }
         unknown->Unknown_State();
         unknown->Crash_state();
@@ -701,18 +729,20 @@ void Game_Scene::Jump_Collision() {
 
          mario->y = 455;
          mario->life--;
+         main_theme_Music->stop();
+         death_Music->play();
          killTimer(timer3);
          killTimer(timer1);
          game_start = false;
-         QTimer::singleShot(1500, this, [=]() {
+         QTimer::singleShot(2000, this, [=]() {
              mario->is_die = false;
-
              mario->is_invincible = true;
              timer1 = startTimer(15);//开启定时器
              timer3 = startTimer(40);
              game_start = true;
              mario->die_state = 0;
              mario->die_pix_state = -50;
+             main_theme_Music->play();
          });
      }
 
@@ -728,24 +758,84 @@ void Game_Scene::Jump_Collision() {
          }
          //关闭计时器3
          killTimer(timer3);
+         main_theme_Music->stop();
+         Out_of_Life_Music->play();
+         QTimer::singleShot(3000, this, [=]() {
+             Out_of_Life_Music->stop();
+         });
          Game_Over();
      }
 
  }
 
  // 游戏胜利处理弹出新窗口，显示游戏胜利（理想情况下可以做一段小视频）
- void Game_Scene::Game_Win() {
+ void Game_Scene::Game_Win()
+ {
+     main_theme_Music->stop();
+//
+     //
      killTimer(timer1);
+     if (is_kill_timer2)
+     {
+         //关闭计时器2
+         killTimer(timer2);
+     }
+     //关闭计时器3
      killTimer(timer3);
      QTimer::singleShot(1000, this, [=]() {
          game_start = false;
-         time = 300.0;
+
+         is_win = true;
+
          update();
+
      });
-     QTimer::singleShot(1000, this, [=]() {
-         startTimer(timer1);
-         startTimer(timer3);
+     win = new Game_Win_dialog;//初始化暂停窗口
+     win->setParent(this);
+     //链接返回主界面
+     connect(win->btn_Back, &QPushButton::clicked, this, [=](){
+
+
+         QTimer::singleShot(500, this, [=]() {
+
+              this->close();
+             emit
+                 this->back();
+         });
+
+
+
      });
+     //链接重新游戏
+     connect(win->btn_InitGame, &QPushButton::clicked, this, [=]() {
+
+
+         QTimer::singleShot(500, this, [=]() {
+
+             //
+             //
+             Game_Init();//游戏初始化
+             win->close();
+             QTimer::singleShot(1500, this, [=]() {
+                 timer1 = startTimer(15);//开启定时器
+                 timer3 = startTimer(40);
+                 game_start = true;
+             });
+         });
+     });
+
+     //链接退出游戏
+     connect(win->btn_Exit, &QPushButton::clicked, this, [=]() {
+
+         QTimer::singleShot(500, this, [=]() {
+             this->close();
+
+         });
+     });
+
+     win->exec();
+
+
 
  }
 
@@ -754,8 +844,12 @@ void Game_Scene::Jump_Collision() {
  //游戏失败处理
  void Game_Scene::Game_Over()
  {
-    Game_Pause *p = new Game_Pause;
-    p->show();
+
+     this->close();
+     Game_Pause *p = new Game_Pause;
+     p->show();
+
+
 
 }
 

@@ -6,6 +6,8 @@ CONFIG += c++17
 greaterThan(QT_MAJOR_VERSION, 4): QT += multimedia
 
 CONFIG += resources_big
+QT += multimedia
+
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -17,6 +19,7 @@ SOURCES += \
     game_over.cpp \
     game_pause.cpp \
     game_scene.cpp \
+    game_win.cpp \
     main.cpp \
     mainwindow.cpp \
     mario.cpp \
@@ -33,6 +36,7 @@ HEADERS += \
     game_over.h \
     game_pause.h \
     game_scene.h \
+    game_win.h \
     mainwindow.h \
     mario.h \
     master.h \

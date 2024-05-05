@@ -15,7 +15,7 @@ Game_Pause::Game_Pause() {
     btn_continue = new My_PushButton(":/photo/continueGame.png");
     btn_continue->setParent(this);
     btn_continue->setFixedSize(150, 75);
-    btn_continue->setIconSize(QSize(150, 75));
+    btn_continue->setIconSize(QSize(150, 75));//设置图片大小
     btn_continue->move(20, 10);
 
     //添加重新开始按钮
@@ -26,7 +26,7 @@ Game_Pause::Game_Pause() {
     initGame->move(20, 90);
 
     //添加退出游戏按钮
-    btn_exit = new My_PushButton(":/photo/start.png");//添加离开按钮
+    btn_exit = new My_PushButton(":/photo/end.png");//添加离开按钮
     btn_exit->setParent(this);
     btn_exit->setFixedSize(150, 75);
     btn_exit->setIconSize(QSize(150, 75));
