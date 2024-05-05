@@ -14,7 +14,7 @@ Cinema::Cinema(QWidget *parent)
     setWindowTitle("超级马里奥");
     setFixedSize(800, 545);
 
-     Music_Init();
+    Music_Init();
     Game_Init();
     Pause_Init();
 
@@ -152,7 +152,7 @@ void Cinema::Music_Init()
     //出现蘑菇
     Mushroom_Music = new QSoundEffect;
     Mushroom_Music->setSource(QUrl::fromLocalFile(":/music/mushroom.wav"));
-   Mushroom_Music->setVolume(0.5f);
+    Mushroom_Music->setVolume(0.5f);
 
 
 
@@ -314,12 +314,12 @@ void Cinema::paintEvent(QPaintEvent *)
     QFont font(fontName); // 创建字体对象
     font.setPointSize(40); // 设置字体大小
     painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/sky1.jpg"));//画背景
-  //画得分
+    //画得分
     QPixmap pixmap(":/photo/score.png");
     QPixmap scaledPixmap = pixmap.scaled(40, 40); // 缩放为30x30大小
     painter.drawPixmap(QPointF(230, 10), scaledPixmap);
 
-   // painter.drawPixmap(280, 80, QPixmap(":/photo/score.png"), 0, 0, 100, 100);//金币图标
+    // painter.drawPixmap(280, 80, QPixmap(":/photo/score.png"), 0, 0, 100, 100);//金币图标
     painter.drawPixmap(380, 10, 40, 40, QPixmap(":/photo/gold_cion.png"));
     painter.setFont(font);
 
@@ -635,8 +635,8 @@ void Cinema::Move_Collision() {
             return;
         }
         else if (*it->begin() - mario->x - 300 >= -40 && *it->begin() - mario->x - 300 <= -35 &&
-                   *(it->begin() + 1) - mario->y > - 35 && *(it->begin() + 1) - mario->y < 35 &&
-                   mario->direction == "left" && *(it->begin() + 2) == 1)
+                 *(it->begin() + 1) - mario->y > - 35 && *(it->begin() + 1) - mario->y < 35 &&
+                 mario->direction == "left" && *(it->begin() + 2) == 1)
         {
             mario->can_move = false; // 禁止移动
             return;
@@ -673,7 +673,7 @@ void Cinema::Move_Collision() {
             return;
         }
         else if (*it->begin() - mario->x - 300 >= -55 && *it->begin() - mario->x - 300 <= -50 &&
-                   *(it->begin() + 1) - mario->y <= 45 && mario->direction == "left")
+                 *(it->begin() + 1) - mario->y <= 45 && mario->direction == "left")
         {
             mario->can_move = false; // 禁止移动
             return;
@@ -689,13 +689,13 @@ void Cinema::Move_Collision() {
             return;
         }
         else if (*it->begin() - mario->x - 300 >= -55 && *it->begin() - mario->x - 300 <= -50 &&
-                   *(it->begin() + 1) < mario->y + 45 && mario->direction == "left")
+                 *(it->begin() + 1) < mario->y + 45 && mario->direction == "left")
         {
             mario->can_move = false; // 禁止移动
             return;
         }
     }
-//检测与城堡的接触
+    //检测与城堡的接触
     QVector < QVector < int >> ::iterator it = castle->m.begin()->begin();
     if (*it->begin() - mario->x - 300 >= -220 && *it->begin() - mario->x - 300 <= -40 &&
         *(it->begin() + 1) < mario->y - 100 && *(it->begin() + 1) > mario->y - 270) {
@@ -705,10 +705,10 @@ void Cinema::Move_Collision() {
         Game_Win_Music->play();
 
 
-            if(is_win_dialog_show == false){
-                qDebug()<<"auasgfcub";
-                Game_Win();
-                is_win_dialog_show = true;
+        if(is_win_dialog_show == false){
+            qDebug()<<"auasgfcub";
+            Game_Win();
+            is_win_dialog_show = true;
 
         }
 
@@ -717,14 +717,14 @@ void Cinema::Move_Collision() {
     qDebug()<<mario->x;
     mario->can_move = true;
 
-     if((9100 - mario->x) <=300 && mario->y < 460)
-     {
-         mario->x =8800;
-         mario->y +=1;
-         mario->is_jump = false;
-         mario-> is_jump_end = true;
-         mario->is_space_release = true;
-         mario->distance = 0;
+    if((9100 - mario->x) <=300 && mario->y < 460)
+    {
+        mario->x =8800;
+        mario->y +=1;
+        mario->is_jump = false;
+        mario-> is_jump_end = true;
+        mario->is_space_release = true;
+        mario->distance = 0;
     }
     else if((9100 - mario->x) <= 300&&mario->y >= 460)
     {
@@ -809,209 +809,209 @@ void Cinema::Jump_Collision() {
 
 
 // 初始化死亡状态
- void Cinema::Die_Init()
+void Cinema::Die_Init()
 {
-     if (mario->is_die && key != "null")
+    if (mario->is_die && key != "null")
     {
-         mario->walk_state = 0;
-         key = "null";
-     }
-     if (mario->invincible_state == 100)
-     {
-         mario->is_invincible = false;
-         mario->invincible_state = 0;
-     }
-     if (mario->is_invincible)
-     {
-         mario->invincible_state += 1;
-     }
-     //如果马里奥死了
-     if (mario->y > 500 && mario->life > 0)
-     {
+        mario->walk_state = 0;
+        key = "null";
+    }
+    if (mario->invincible_state == 100)
+    {
+        mario->is_invincible = false;
+        mario->invincible_state = 0;
+    }
+    if (mario->is_invincible)
+    {
+        mario->invincible_state += 1;
+    }
+    //如果马里奥死了
+    if (mario->y > 500 && mario->life > 0)
+    {
 
-         mario->y = 455;
-         mario->life--;
-         main_theme_Music->stop();
-         death_Music->play();
-         killTimer(timer3);
-         killTimer(timer1);
-         game_start = false;
-         QTimer::singleShot(2000, this, [=]() {
-             mario->is_die = false;
-             mario->is_invincible = true;
-             timer1 = startTimer(15);//开启定时器
-             timer3 = startTimer(40);
-             game_start = true;
-             mario->die_state = 0;
-             mario->die_pix_state = -50;
-             main_theme_Music->play();
-         });
-     }
-
-
-     //如果生命死光了
-     if (mario->y > 500 && mario->life <= 0)
-     {
-         killTimer(timer1);
-         if (is_kill_timer2)
-         {
-             //关闭计时器2
-             killTimer(timer2);
-         }
-         //关闭计时器3
-         killTimer(timer3);
-         main_theme_Music->stop();
-         Out_of_Life_Music->play();
-         QTimer::singleShot(3000, this, [=]() {
-             Out_of_Life_Music->stop();
-         });
-         Game_Over();
-     }
-
- }
-
- // 游戏胜利处理弹出新窗口，显示游戏胜利（理想情况下可以做一段小视频）
- void Cinema::Game_Win()
- {
-
-     //
-     killTimer(timer1);
-     if (is_kill_timer2)
-     {
-         //关闭计时器2
-         killTimer(timer2);
-     }
-     //关闭计时器3
-     killTimer(timer3);
-     QTimer::singleShot(1000, this, [=]() {
-         game_start = false;
-
-         is_win = true;
-
-         update();
-
-     });
-     win = new Game_Win_dialog;
-     win->setParent(this);
-     win->show();
-     qDebug()<<"55456515";
-     //链接返回主界面
-     connect(win->btn_Back, &QPushButton::clicked, this, [=](){
+        mario->y = 455;
+        mario->life--;
+        main_theme_Music->stop();
+        death_Music->play();
+        killTimer(timer3);
+        killTimer(timer1);
+        game_start = false;
+        QTimer::singleShot(2000, this, [=]() {
+            mario->is_die = false;
+            mario->is_invincible = true;
+            timer1 = startTimer(15);//开启定时器
+            timer3 = startTimer(40);
+            game_start = true;
+            mario->die_state = 0;
+            mario->die_pix_state = -50;
+            main_theme_Music->play();
+        });
+    }
 
 
-         QTimer::singleShot(500, this, [=]() {
+    //如果生命死光了
+    if (mario->y > 500 && mario->life <= 0)
+    {
+        killTimer(timer1);
+        if (is_kill_timer2)
+        {
+            //关闭计时器2
+            killTimer(timer2);
+        }
+        //关闭计时器3
+        killTimer(timer3);
+        main_theme_Music->stop();
+        Out_of_Life_Music->play();
+        QTimer::singleShot(3000, this, [=]() {
+            Out_of_Life_Music->stop();
+        });
+        Game_Over();
+    }
 
-              this->close();
-             emit
-                 this->back();
-         });
+}
+
+// 游戏胜利处理弹出新窗口，显示游戏胜利（理想情况下可以做一段小视频）
+void Cinema::Game_Win()
+{
+
+    //
+    killTimer(timer1);
+    if (is_kill_timer2)
+    {
+        //关闭计时器2
+        killTimer(timer2);
+    }
+    //关闭计时器3
+    killTimer(timer3);
+    QTimer::singleShot(1000, this, [=]() {
+        game_start = false;
+
+        is_win = true;
+
+        update();
+
+    });
+    win = new Game_Win_dialog;
+    win->setParent(this);
+    win->show();
+    qDebug()<<"55456515";
+    //链接返回主界面
+    connect(win->btn_Back, &QPushButton::clicked, this, [=](){
 
 
+        QTimer::singleShot(500, this, [=]() {
 
-     });
-     //链接重新游戏
-     connect(win->btn_InitGame, &QPushButton::clicked, this, [=]() {
-
-
-         QTimer::singleShot(500, this, [=]() {
-
-             //
-             //
-             Game_Init();//游戏初始化
-             qDebug()<<"5555";
-             win->close();
-             QTimer::singleShot(500, this, [=]() {
-                 timer1 = startTimer(15);//开启定时器
-                 timer3 = startTimer(40);
-                 game_start = true;
-                 is_win = false;
-             });
-             win->hide();
-
-         });
-     });
-
-     //链接退出游戏
-     connect(win->btn_Exit, &QPushButton::clicked, this, [=]() {
-
-         QTimer::singleShot(500, this, [=]() {
-             this->close();
-
-         });
-     });
+            this->close();
+            emit
+                this->back();
+        });
 
 
 
+    });
+    //链接重新游戏
+    connect(win->btn_InitGame, &QPushButton::clicked, this, [=]() {
 
 
- }
+        QTimer::singleShot(500, this, [=]() {
 
+            //
+            //
+            Game_Init();//游戏初始化
+            qDebug()<<"5555";
+            win->close();
+            QTimer::singleShot(500, this, [=]() {
+                timer1 = startTimer(15);//开启定时器
+                timer3 = startTimer(40);
+                game_start = true;
+                is_win = false;
+            });
+            win->hide();
 
+        });
+    });
 
- //游戏失败处理
- void Cinema::Game_Over()
- {
+    //链接退出游戏
+    connect(win->btn_Exit, &QPushButton::clicked, this, [=]() {
 
-     killTimer(timer1);
-     if (is_kill_timer2)
-     {
-         //关闭计时器2
-         killTimer(timer2);
-     }
-     //关闭计时器3
-     killTimer(timer3);
-     QTimer::singleShot(1000, this, [=]() {
-         game_start = false;
+        QTimer::singleShot(500, this, [=]() {
+            this->close();
 
-         is_win = true;
-
-         update();
-
-     });
-     win = new Game_Win_dialog;//初始化暂停窗口
-     win->setParent(this);
-     //链接返回主界面
-     connect(win->btn_Back, &QPushButton::clicked, this, [=](){
-
-
-         QTimer::singleShot(500, this, [=]() {
-
-             this->close();
-             emit
-                 this->back();
-         });
+        });
+    });
 
 
 
-     });
-     //链接重新游戏
-     connect(win->btn_InitGame, &QPushButton::clicked, this, [=]() {
 
 
-         QTimer::singleShot(500, this, [=]() {
+}
 
-             //
-             //
-             Game_Init();//游戏初始化
-             win->close();
-             QTimer::singleShot(1500, this, [=]() {
-                 timer1 = startTimer(15);//开启定时器
-                 timer3 = startTimer(40);
-                 game_start = true;
-             });
-         });
-     });
 
-     //链接退出游戏
-     connect(win->btn_Exit, &QPushButton::clicked, this, [=]() {
 
-         QTimer::singleShot(500, this, [=]() {
-             this->close();
+//游戏失败处理
+void Cinema::Game_Over()
+{
 
-         });
-     });
+    killTimer(timer1);
+    if (is_kill_timer2)
+    {
+        //关闭计时器2
+        killTimer(timer2);
+    }
+    //关闭计时器3
+    killTimer(timer3);
+    QTimer::singleShot(1000, this, [=]() {
+        game_start = false;
 
-     win->exec();
+        is_win = true;
+
+        update();
+
+    });
+    win = new Game_Win_dialog;//初始化暂停窗口
+    win->setParent(this);
+    //链接返回主界面
+    connect(win->btn_Back, &QPushButton::clicked, this, [=](){
+
+
+        QTimer::singleShot(500, this, [=]() {
+
+            this->close();
+            emit
+                this->back();
+        });
+
+
+
+    });
+    //链接重新游戏
+    connect(win->btn_InitGame, &QPushButton::clicked, this, [=]() {
+
+
+        QTimer::singleShot(500, this, [=]() {
+
+            //
+            //
+            Game_Init();//游戏初始化
+            win->close();
+            QTimer::singleShot(1500, this, [=]() {
+                timer1 = startTimer(15);//开启定时器
+                timer3 = startTimer(40);
+                game_start = true;
+            });
+        });
+    });
+
+    //链接退出游戏
+    connect(win->btn_Exit, &QPushButton::clicked, this, [=]() {
+
+        QTimer::singleShot(500, this, [=]() {
+            this->close();
+
+        });
+    });
+
+    win->exec();
 
 
 }
