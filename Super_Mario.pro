@@ -15,10 +15,11 @@ QT += multimedia
 SOURCES += \
     brick.cpp \
     castle.cpp \
+    cinema.cpp \
+    flag.cpp \
     game_help.cpp \
     game_over.cpp \
     game_pause.cpp \
-    game_scene.cpp \
     game_win.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -32,10 +33,11 @@ SOURCES += \
 HEADERS += \
     brick.h \
     castle.h \
+    cinema.h \
+    flag.h \
     game_help.h \
     game_over.h \
     game_pause.h \
-    game_scene.h \
     game_win.h \
     mainwindow.h \
     mario.h \

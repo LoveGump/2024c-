@@ -1,5 +1,5 @@
-#ifndef GAME_SCENE_H
-#define GAME_SCENE_H
+#ifndef CINEMA_H
+#define CINEMA_H
 
 
 #include <QWidget>
@@ -20,15 +20,16 @@
 #include"castle.h"
 #include <QSoundEffect>
 #include "game_win.h"
+#include"flag.h"
 //#include"mainwindow.h"
 
 
-class Game_Scene : public QWidget
+class Cinema : public QWidget
 {
     Q_OBJECT
 public:
 
-    explicit Game_Scene(QWidget *parent = nullptr);
+    explicit Cinema(QWidget *parent = nullptr);
 
 
 
@@ -43,6 +44,7 @@ public:
     int score; // 得分
     bool is_press_x; // 是否按下X键
     bool is_win; // 是否胜利
+    bool is_win_dialog_show ;
 
     QString key; // 按键状态
     Game_Pause *Pause; // 游戏暂停对象
@@ -57,6 +59,7 @@ public:
     MushRoom *mushroom;
     Master *master;
     Castle *castle;
+    Flag *f;
     // Fire *fire;
     //普通背景音乐
     QSoundEffect *main_theme_Music;
@@ -104,4 +107,4 @@ signals:
     void back();
 };
 
-#endif // GAME_SCENE_H
+#endif // CINEMA_H

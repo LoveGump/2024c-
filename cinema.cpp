@@ -1,12 +1,13 @@
-#include "game_scene.h"
+#include "cinema.h"
 #include "my_pushbutton.h"
 #include "qtimer.h"
 #include<QDebug>
+#include <QFontDatabase>
 
 #include"mainwindow.h"
 #include"game_win.h"
 
-Game_Scene::Game_Scene(QWidget *parent)
+Cinema::Cinema(QWidget *parent)
     : QWidget{parent}
 {
     //设置标题
@@ -30,8 +31,9 @@ Game_Scene::Game_Scene(QWidget *parent)
 }
 
 //初始化游戏
-void Game_Scene::Game_Init()// 初始化游戏
+void Cinema::Game_Init()// 初始化游戏
 {
+    is_win_dialog_show = false;
     mario = new Mario;
     brick = new Brick;
     pipe = new Pipe;
@@ -52,7 +54,7 @@ void Game_Scene::Game_Init()// 初始化游戏
     is_press_x = false;
     is_win = false;
     score = 0;
-    time = 300.0;
+    time = 200.0;
 
     is_kill_timer2 = true;
     game_start = false;
@@ -60,7 +62,7 @@ void Game_Scene::Game_Init()// 初始化游戏
 }
 
 // 初始化暂停状态
-void Game_Scene::Pause_Init()
+void Cinema::Pause_Init()
 {
     Pause = new Game_Pause();//初始化暂停窗口
 
@@ -94,7 +96,7 @@ void Game_Scene::Pause_Init()
 
         QTimer::singleShot(500, this, [=]() {
 
-        //    mainWindow->show();
+
             this->hide();
         });
     });
@@ -102,7 +104,7 @@ void Game_Scene::Pause_Init()
 }
 
 //初始化音乐
-void Game_Scene::Music_Init()
+void Cinema::Music_Init()
 {
     //普通背景音乐
     main_theme_Music = new QSoundEffect;
@@ -158,9 +160,9 @@ void Game_Scene::Music_Init()
 }
 
 //按键函数 按下按键 执行相应的函数
-void Game_Scene::keyPressEvent(QKeyEvent *event)
+void Cinema::keyPressEvent(QKeyEvent *event)
 {
-    if (!mario->is_die)
+    if (!mario->is_die && (9100 - mario->x) >=300)
     {
         switch (event->key())
         {
@@ -195,12 +197,13 @@ void Game_Scene::keyPressEvent(QKeyEvent *event)
             break;
         }
     }
+
 }
 
 //按键函数 释放按键 执行相应的函数
-void Game_Scene::keyReleaseEvent(QKeyEvent *event)
+void Cinema::keyReleaseEvent(QKeyEvent *event)
 {
-    if (!mario->is_die)
+    if (!mario->is_die||(9100 - mario->x) >=300)
     {
         switch (event->key())
         {
@@ -270,23 +273,31 @@ void Game_Scene::keyReleaseEvent(QKeyEvent *event)
 
 
 //绘制地图
-void Game_Scene::paintEvent(QPaintEvent *)
+void Cinema::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     if (!game_start)  // 如果游戏尚未开始
     {
+        // 加载自定义字体文件
+        int  fontId = QFontDatabase::addApplicationFont(":/fonts/Fixedsys500c.ttf");
+
+        // 获取字体名称
+        QString fontName = QFontDatabase::applicationFontFamilies(fontId).at(0);
         // 绘制游戏未开始时的界面
         painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/blackground2.png")); // 黑背景
         painter.drawPixmap(300, 250, 40, 40, QPixmap(":/photo/life.png")); // 绘制生命图标
         painter.setPen(QColor(255, 255, 255)); // 设置画笔颜色
-        QFont font; // 创建字体对象
+        QFont font(fontName); // 创建字体对象
+
         font.setPointSize(35); // 设置字体大小
         painter.setFont(font); // 设置字体
         painter.drawText(360, 280, "x"); // 绘制生命图标右侧的"x"
         painter.drawText(80, 40, "times:"); // 绘制计时文本
-        painter.drawText(220, 40, QString::number(time, 'f', 1)); // 绘制倒计时
+        painter.drawText(240, 40, QString::number(time, 'f', 1)); // 绘制倒计时
         painter.drawText(600, 40, "coin:"); // 绘制金币文本
+
         painter.drawText(720, 40, QString::number(unknown->coin)); // 绘制金币数量
+
         font.setPointSize(45); // 设置字体大小
         painter.setFont(font); // 设置字体
         painter.drawText(400, 287, QString::number(mario->life)); // 绘制生命值
@@ -295,13 +306,25 @@ void Game_Scene::paintEvent(QPaintEvent *)
         return;
 
     }
+    // 加载自定义字体文件
+    int  fontId = QFontDatabase::addApplicationFont(":/fonts/Fixedsys500c.ttf");
 
+    // 获取字体名称
+    QString fontName = QFontDatabase::applicationFontFamilies(fontId).at(0);
+    QFont font(fontName); // 创建字体对象
+    font.setPointSize(40); // 设置字体大小
     painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/sky1.jpg"));//画背景
-    painter.drawPixmap(230, 10, QPixmap(":/photo/coin.png"), 0, 0, 30, 30);
-    painter.drawPixmap(380, 10, 40, 40, QPixmap(":/photo/score.png"));
-    painter.setFont(QFont("Times", 45, QFont::Bold));
-    painter.drawText(280, 50, QString::number(unknown->coin));
-    painter.drawText(430, 50, QString::number(score));
+  //画得分
+    QPixmap pixmap(":/photo/score.png");
+    QPixmap scaledPixmap = pixmap.scaled(40, 40); // 缩放为30x30大小
+    painter.drawPixmap(QPointF(230, 10), scaledPixmap);
+
+   // painter.drawPixmap(280, 80, QPixmap(":/photo/score.png"), 0, 0, 100, 100);//金币图标
+    painter.drawPixmap(380, 10, 40, 40, QPixmap(":/photo/gold_cion.png"));
+    painter.setFont(font);
+
+    painter.drawText(280, 50, QString::number(score));
+    painter.drawText(430, 50, QString::number(unknown->coin));
     //绘制生命值
     for (int i = 1; i <= mario->life; i++)
     {
@@ -317,8 +340,14 @@ void Game_Scene::paintEvent(QPaintEvent *)
     if (mario->x > 7800)
     {
         QVector < QVector < int >> ::iterator it = castle->m.begin()->begin();
-        //城堡相对于马里奥的坐标为它的初始值8700 减去马里奥现在的横坐标 ，纵坐标为其本身的纵坐标
-        painter.drawPixmap(*it->begin() - mario->x, *(it->begin() + 1), 200, 200, QPixmap(":/photo/castle.png"));
+
+        QPixmap pixmap(":/photo/castle1.png");
+        QPixmap scaledPixmap = pixmap.scaled(260, 260);
+        painter.drawPixmap(QPointF(*it->begin() - mario->x, *(it->begin() + 1)), scaledPixmap);
+
+
+        // //城堡相对于马里奥的坐标为它的初始值8700 减去马里奥现在的横坐标 ，纵坐标为其本身的纵坐标
+        // painter.drawPixmap(*it->begin() - mario->x, *(it->begin() + 1), 200, 200, QPixmap(":/photo/castle1.png"));
     }
     //蘑菇
     if (mushroom->mushroom_state != 0)
@@ -430,12 +459,29 @@ void Game_Scene::paintEvent(QPaintEvent *)
         // if (fire->is_have2) {
         //     painter.drawPixmap(fire->x2 - mary->x, fire->y2, 20, 20, QPixmap(":/photo/fire.png"));
         // }
+        //绘制旗帜
+
+
+        QPixmap pixmap(":/photo/flag.png");
+        QPixmap scaledPixmap = pixmap.scaled(50, 550);
+        painter.drawPixmap(QPointF(9100 - mario->x, 0), scaledPixmap);
+
+
+        QPixmap pixmap1(":/photo/flag2.png");
+        QPixmap scaledPixmap1 = pixmap1.scaled(50, 50);
+        if(mario->x < 8800){
+            painter.drawPixmap(QPointF(9100 - mario-> x+30, 40), scaledPixmap1);
+        }
+        else{
+            painter.drawPixmap(QPointF(9100 - mario-> x+30, mario->y), scaledPixmap1);
+        }
 
     }
 
 }
 
-void Game_Scene::timerEvent(QTimerEvent *event) // 定时器事件
+// 定时器事件
+void Cinema::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == timer1 && mario->is_die)
     {
@@ -508,8 +554,8 @@ void Game_Scene::timerEvent(QTimerEvent *event) // 定时器事件
 
 }
 
-//检测是否落在什么东西的上面
-void Game_Scene::Fall_Down(int &y)
+//检测mario 是否落在什么东西的上面
+void Cinema::Fall_Down(int &y)
 {
     if (mario->height - mario->distance < 0)
     {
@@ -574,8 +620,8 @@ void Game_Scene::Fall_Down(int &y)
 }
 
 
-//检测mari平移过程中 是否 碰到 障碍物
-void Game_Scene::Move_Collision() {
+//检测mario 平移过程中 是否 碰到 障碍物
+void Cinema::Move_Collision() {
 
     // 检测 mario 是否与砖块发生了碰撞
     for (QVector < QVector <int> >::iterator it = brick->m.begin()->begin(); it != brick->m.begin()->end(); it++)
@@ -651,26 +697,49 @@ void Game_Scene::Move_Collision() {
     }
 //检测与城堡的接触
     QVector < QVector < int >> ::iterator it = castle->m.begin()->begin();
-    if (*it->begin() - mario->x - 300 >= -60 && *it->begin() - mario->x - 300 <= -20 &&
-        *(it->begin() + 1) < mario->y - 100 && *(it->begin() + 1) > mario->y - 200) {
+    if (*it->begin() - mario->x - 300 >= -220 && *it->begin() - mario->x - 300 <= -40 &&
+        *(it->begin() + 1) < mario->y - 100 && *(it->begin() + 1) > mario->y - 270) {
 
         is_win = true;
         main_theme_Music->stop();
         Game_Win_Music->play();
-        QTimer::singleShot(500, this, [=]() {
-            Game_Win();
-        });
+
+
+            if(is_win_dialog_show == false){
+                qDebug()<<"auasgfcub";
+                Game_Win();
+                is_win_dialog_show = true;
+
+        }
 
 
     }
+    qDebug()<<mario->x;
     mario->can_move = true;
+
+     if((9100 - mario->x) <=300 && mario->y < 460)
+     {
+         mario->x =8800;
+         mario->y +=1;
+         mario->is_jump = false;
+         mario-> is_jump_end = true;
+         mario->is_space_release = true;
+         mario->distance = 0;
+    }
+    else if((9100 - mario->x) <= 300&&mario->y >= 460)
+    {
+        key = "right";
+        mario->speed = 2;
+        mario->y = 460;
+
+    }
 
 }
 
 
 
 //检测mario跳跃过程中 是否 碰到 障碍物
-void Game_Scene::Jump_Collision() {
+void Cinema::Jump_Collision() {
     // 检查mario的跳跃高度是否为0或负值，如果是则直接返回，表示没有发生跳跃
     if (mario->height - mario->distance <= 0)
     {
@@ -740,7 +809,7 @@ void Game_Scene::Jump_Collision() {
 
 
 // 初始化死亡状态
- void Game_Scene::Die_Init()
+ void Cinema::Die_Init()
 {
      if (mario->is_die && key != "null")
     {
@@ -802,10 +871,87 @@ void Game_Scene::Jump_Collision() {
  }
 
  // 游戏胜利处理弹出新窗口，显示游戏胜利（理想情况下可以做一段小视频）
- void Game_Scene::Game_Win()
+ void Cinema::Game_Win()
  {
 
      //
+     killTimer(timer1);
+     if (is_kill_timer2)
+     {
+         //关闭计时器2
+         killTimer(timer2);
+     }
+     //关闭计时器3
+     killTimer(timer3);
+     QTimer::singleShot(1000, this, [=]() {
+         game_start = false;
+
+         is_win = true;
+
+         update();
+
+     });
+     win = new Game_Win_dialog;
+     win->setParent(this);
+     win->show();
+     qDebug()<<"55456515";
+     //链接返回主界面
+     connect(win->btn_Back, &QPushButton::clicked, this, [=](){
+
+
+         QTimer::singleShot(500, this, [=]() {
+
+              this->close();
+             emit
+                 this->back();
+         });
+
+
+
+     });
+     //链接重新游戏
+     connect(win->btn_InitGame, &QPushButton::clicked, this, [=]() {
+
+
+         QTimer::singleShot(500, this, [=]() {
+
+             //
+             //
+             Game_Init();//游戏初始化
+             qDebug()<<"5555";
+             win->close();
+             QTimer::singleShot(500, this, [=]() {
+                 timer1 = startTimer(15);//开启定时器
+                 timer3 = startTimer(40);
+                 game_start = true;
+                 is_win = false;
+             });
+             win->hide();
+
+         });
+     });
+
+     //链接退出游戏
+     connect(win->btn_Exit, &QPushButton::clicked, this, [=]() {
+
+         QTimer::singleShot(500, this, [=]() {
+             this->close();
+
+         });
+     });
+
+
+
+
+
+ }
+
+
+
+ //游戏失败处理
+ void Cinema::Game_Over()
+ {
+
      killTimer(timer1);
      if (is_kill_timer2)
      {
@@ -830,7 +976,7 @@ void Game_Scene::Jump_Collision() {
 
          QTimer::singleShot(500, this, [=]() {
 
-              this->close();
+             this->close();
              emit
                  this->back();
          });
@@ -868,29 +1014,14 @@ void Game_Scene::Jump_Collision() {
      win->exec();
 
 
-
- }
-
-
-
- //游戏失败处理
- void Game_Scene::Game_Over()
- {
-
-     this->close();
-     Game_Pause *p = new Game_Pause;
-     p->show();
-
-
-
 }
 
 //初始化重新开始游戏的函数
-void Game_Scene::Pause_Game_Init()
+void Cinema::Pause_Game_Init()
 {
     key = "null";
     score = 0;
-    time = 300.0;
+    time = 200.0;
     is_press_x = false;
     is_kill_timer2 = true;
     game_start = false;

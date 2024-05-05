@@ -63,5 +63,10 @@
         <file>music/coin.wav</file>
         <file>music/mushroom.wav</file>
         <file>photo/help.png</file>
+        <file>photo/castle1.png</file>
+        <file>photo/castle2.png</file>
+        <file>photo/mario.png</file>
+        <file>fonts/Fixedsys500c.ttf</file>
+        <file>photo/gold_cion.png</file>
     </qresource>
 </RCC>

@@ -20,6 +20,7 @@ public:
     int distance; // 跳跃距离
     int die_state; // 死亡状态
     int die_pix_state; // 死亡像素状态
+    int speed;
 
     int invincible_state; // 无敌状态
     bool can_move; // 是否可以移动
@@ -32,6 +33,7 @@ public:
 
     void Mario_Init(); // 角色初始化函数
     void Move_state(); // 移动状态更新函数
+
 
     void Mario_Move(const QString &direction); // 角色移动函数
     void Jump_And_Down(); // 跳跃和下落函数

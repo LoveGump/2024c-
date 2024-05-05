@@ -7,7 +7,7 @@
 #include "ui_mainwindow.h"
 #include <QSoundEffect>
 #include"my_pushbutton.h"
-#include"game_scene.h"
+#include"cinema.h"
 #include"game_help.h"
 
 QT_BEGIN_NAMESPACE
@@ -29,7 +29,7 @@ public:
     //添加结束按钮
     My_PushButton *end_Btn;
     //开始游戏的界面
-    Game_Scene *gamescene;
+    Cinema *gamescene;
     //帮助文档的界面
     game_help *gamehelp;
 

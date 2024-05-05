@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     //设置窗口大小
     this->setFixedSize(800,545);
     //设置图标
-    QApplication::setWindowIcon(QIcon(":/photo/icon.png"));
+    QApplication::setWindowIcon(QIcon(":/photo/mario.png"));
     //设置开始游戏按钮
     start_Btn = new My_PushButton(":/photo/start3.png");
     //设置父类
@@ -46,14 +46,14 @@ MainWindow::MainWindow(QWidget *parent)
             this->hide();
             stage_clear_Music->play();
 
-            gamescene = new Game_Scene;
+            gamescene = new Cinema;
 
             gamescene->show();
             QTimer::singleShot(1500, this, [=]() {
                 stage_clear_Music->stop();
 
             });
-            connect(gamescene,&Game_Scene::back,this,[=](){
+            connect(gamescene,&Cinema::back,this,[=](){
                 this->show();
                 background_Music->play();
             });

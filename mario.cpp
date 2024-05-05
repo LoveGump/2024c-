@@ -5,13 +5,13 @@ Mario::Mario() {
     Mario_Init();
 }
 void Mario::Mario_Init() {
-    x = 0; // 角色的理论x坐标
-    map_x =0 ; // 角色在地图中的x坐标
+    x = 7800; // 角色的理论x坐标
+    map_x =300 ; // 角色在地图中的x坐标
     y = 455; // 角色y坐标
     colour = 1; // 角色颜色
     life = 5; // 角色生命
     height = 20; // 角色高度
-
+    speed = 5;
     distance = 0; // 跳跃距离
 
     walk_state = 0; // 行走动画状态
@@ -30,7 +30,7 @@ void Mario::Mario_Init() {
     is_jump_end = true; // 判断角色单次跳跃是否结束
     is_space_release = true; // 空格键是否释放
 
-    direction = "right";
+    direction = "right";//默认移动方向
     invincible_state = 0;
 
 }
@@ -64,29 +64,29 @@ void Mario::Mario_Move(const QString &direction)// 角色移动函数
     //如果方向向右 并且x坐标小于300 并且处于可以移动的状态下
     if (direction == "right" && x <= 300 && can_move)
     {
-        x += 5;
-        map_x += 5;
+        x += speed;
+        map_x += speed;
         walk_state += 57;
     }
     //如果方向向左 并且0 <= x <= 300 并且处于可以移动的状态下
     else if (direction == "left" && x <= 300 && x >= 0 && can_move)
     {
-        x -= 5;
-        map_x -= 5;
+        x -= speed;
+        map_x -= speed;
         walk_state += 57;
     }
     //如果方向向右 并且 x >= 300 并且处于可以移动的状态下
     else if (direction == "right" && x >= 300 && can_move)
     {
-        x += 5;
+        x += speed;
         walk_state += 57;
-        ground_state += 5;
+        ground_state += speed;
     }
     //如果方向向左 并且 x >= 300 并且处于可以移动的状态下
     else if (direction == "left" && x >= 300 && can_move) {
-        x -= 5;
+        x -= speed;
         walk_state += 57;
-        ground_state -= 5;
+        ground_state -= speed;
     }
     else if ((direction == "left" && x < 0) || (!can_move && direction != "null"))
     {
@@ -94,6 +94,7 @@ void Mario::Mario_Move(const QString &direction)// 角色移动函数
     }
     Move_state();
 }
+
 
 void Mario::Jump_And_Down()// 跳跃和下落函数
 {
@@ -117,7 +118,7 @@ void Mario::Jump_And_Down()// 跳跃和下落函数
 void Mario::Mario_die()
 {
     // 如果马里奥 死了 并且 死亡向上动画尚未完成
-    if (is_die && die_state < 30)
+    if (is_die && die_state < 40)
     {
         // 将马里奥向上移动并增加死亡动画状态
         y -= 5;
@@ -126,7 +127,7 @@ void Mario::Mario_die()
         die_pix_state += 50;
     }
     //如果马里奥 死了 并且 死亡向上动画 完成  开始向下的动画
-    else if (is_die && die_state >= 30)
+    else if (is_die && die_state >= 40)
     {
         // 一旦死亡 向上的动画完成，将马里奥向下移动
         y += 5;
