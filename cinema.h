@@ -39,6 +39,7 @@ public:
 
     bool is_kill_timer2; // 计时器2是否关闭
     bool game_start = false; // 游戏是否开始
+    bool is_background_painted;
 
     float time; // 游戏时间
     int score; // 得分

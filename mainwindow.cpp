@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     //设置父类
     start_Btn->setParent(this);
     //设置开始按钮坐标
-    start_Btn->move(100,this->height()*0.25);
+    start_Btn->move(50,this->height()*0.65);
 
 
     // 创建声音效果对象
@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
     //设置帮助按钮
     help_Btn = new My_PushButton(":/photo/help3.png");
     help_Btn->setParent(this);
-    help_Btn->move(100,this->height()*0.40);
+    help_Btn->move(300,this->height()*0.65);
     connect(help_Btn,&QPushButton::clicked,[=](){
         help_Btn->zoom1();
         help_Btn->zoom2();
@@ -84,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent)
     //设置结束按钮
    end_Btn = new My_PushButton(":/photo/end3.png");
     end_Btn->setParent(this);
-    end_Btn->move(100,this->height()*0.55);
+    end_Btn->move(550,this->height()*0.65);
     connect(end_Btn,&QPushButton::clicked,[=](){
         end_Btn->zoom1();
         end_Btn->zoom2();
@@ -103,5 +103,5 @@ void MainWindow::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
 
-    painter.drawPixmap(0,0,800,550,QPixmap(":/photo/background.jpg"));//画背景图
+    painter.drawPixmap(0,0,800,550,QPixmap(":/photo/background.png"));//画背景图
 }

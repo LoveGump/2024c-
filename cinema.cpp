@@ -33,6 +33,7 @@ Cinema::Cinema(QWidget *parent)
 //初始化游戏
 void Cinema::Game_Init()// 初始化游戏
 {
+    is_background_painted=false;
     is_win_dialog_show = false;
     mario = new Mario;
     brick = new Brick;
@@ -284,14 +285,14 @@ void Cinema::paintEvent(QPaintEvent *)
         // 获取字体名称
         QString fontName = QFontDatabase::applicationFontFamilies(fontId).at(0);
         // 绘制游戏未开始时的界面
-        painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/blackground2.png")); // 黑背景
-        painter.drawPixmap(300, 250, 40, 40, QPixmap(":/photo/life.png")); // 绘制生命图标
-        painter.setPen(QColor(255, 255, 255)); // 设置画笔颜色
+        painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/blackground2.png")); // 背景
+        painter.drawPixmap(340, 90, 40, 40, QPixmap(":/photo/life.png")); // 绘制生命图标
+        painter.setPen(QColor(0, 0, 0)); // 设置画笔颜色
         QFont font(fontName); // 创建字体对象
 
         font.setPointSize(35); // 设置字体大小
         painter.setFont(font); // 设置字体
-        painter.drawText(360, 280, "x"); // 绘制生命图标右侧的"x"
+        painter.drawText(400, 120, "x"); // 绘制生命图标右侧的"x"
         painter.drawText(80, 40, "times:"); // 绘制计时文本
         painter.drawText(240, 40, QString::number(time, 'f', 1)); // 绘制倒计时
         painter.drawText(600, 40, "coin:"); // 绘制金币文本
@@ -300,7 +301,7 @@ void Cinema::paintEvent(QPaintEvent *)
 
         font.setPointSize(45); // 设置字体大小
         painter.setFont(font); // 设置字体
-        painter.drawText(400, 287, QString::number(mario->life)); // 绘制生命值
+        painter.drawText(440, 125, QString::number(mario->life)); // 绘制生命值
 
 
         return;
@@ -313,7 +314,10 @@ void Cinema::paintEvent(QPaintEvent *)
     QString fontName = QFontDatabase::applicationFontFamilies(fontId).at(0);
     QFont font(fontName); // 创建字体对象
     font.setPointSize(40); // 设置字体大小
-    painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/sky1.jpg"));//画背景
+
+    painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/sky1.png"));//画背景
+
+
     //画得分
     QPixmap pixmap(":/photo/score.png");
     QPixmap scaledPixmap = pixmap.scaled(40, 40); // 缩放为30x30大小

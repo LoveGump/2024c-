@@ -34,7 +34,6 @@
         <file>photo/walk_right1.png</file>
         <file>photo/walk_right2.png</file>
         <file>photo/walk_right3.png</file>
-        <file>photo/background.jpg</file>
         <file>music/course_clear.wav</file>
         <file>music/death.wav</file>
         <file>music/flagpole.wav</file>
@@ -45,7 +44,6 @@
         <file>photo/end3.png</file>
         <file>photo/help3.png</file>
         <file>photo/start3.png</file>
-        <file>photo/sky1.jpg</file>
         <file>music/my_pushbutton_press.wav</file>
         <file>music/game_over.wav</file>
         <file>music/invincible.wav</file>
@@ -68,5 +66,7 @@
         <file>photo/mario.png</file>
         <file>fonts/Fixedsys500c.ttf</file>
         <file>photo/gold_cion.png</file>
+        <file>photo/sky1.png</file>
+        <file>photo/background.png</file>
     </qresource>
 </RCC>
