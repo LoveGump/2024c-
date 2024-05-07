@@ -1,5 +1,5 @@
-#ifndef GAME_WIN_H
-#define GAME_WIN_H
+#ifndef GAME_WIN_DIALOG_H
+#define GAME_WIN_DIALOG_H
 
 #include <QDialog>
 #include"my_pushbutton.h"
@@ -18,4 +18,4 @@ public:
     void paintEvent(QPaintEvent *);
 };
 
-#endif // GAME_WIN_H
+#endif // GAME_WIN_DIALOG_H

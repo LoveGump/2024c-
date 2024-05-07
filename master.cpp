@@ -1,4 +1,5 @@
 #include "master.h"
+#include<QSoundEffect>
 
 Master::Master() {
     Master_Init();
@@ -6,6 +7,10 @@ Master::Master() {
 //怪兽初始化
 void Master::Master_Init()
 {
+    master_Death_Music = new QSoundEffect;
+    master_Death_Music->setSource(QUrl::fromLocalFile(":/music/master_death.wav"));
+    master_Death_Music->setVolume(0.5f);
+
     die_state = 0;
     //怪兽坐标
     int arr[10][2] = {{1100, 460},
@@ -59,6 +64,7 @@ void Master::Master_Move()
             if (*itm->begin() - mario->x <= 340 && *itm->begin() - mario->x >= 270
                 && mario->y - *(itm->begin() + 1) > -50 && mario->y -*(itm->begin() + 1)< -5 && !mario->is_jump)
             {
+                master_Death_Music->play();
                 die_state = 1;
                 *(itm->begin() + 4) = 1;
                 mario->is_jump_end = false;//跳跃状态开始
@@ -81,6 +87,7 @@ void Master::Master_Move()
                 {
                     mario->colour = 1;
                     mario->is_invincible = true;
+
                 }
             }
 
@@ -114,12 +121,12 @@ void Master::Master_Move()
             //碰到管道master改变方向
             for (QVector < QVector < int >> ::iterator it = pipe->long_m.begin()->begin(); it != pipe->long_m.begin()->end();it++)
             {
-                if (*it->begin() - *itm->begin() == 30)
+                if (*it->begin() - *itm->begin() == 40)
                 {
                     *(itm->begin() + 3) = 0;
                     return;
                 }
-                else if (*it->begin() - *itm->begin() == -70)
+                else if (*it->begin() - *itm->begin() == -80)
                 {
                     *(itm->begin() + 3) = 1;
                     return;
@@ -127,12 +134,12 @@ void Master::Master_Move()
             }
             for (QVector < QVector < int >> ::iterator it = pipe->short_m.begin()->begin(); it != pipe->short_m.begin()->end();it++)
             {
-                if (*it->begin() - *itm->begin() == 30)
+                if (*it->begin() - *itm->begin() == 40)
                 {
                     *(itm->begin() + 3) = 0;
                     return;
                 }
-                else if (*it->begin() - *itm->begin() == -70)
+                else if (*it->begin() - *itm->begin() == -80)
                 {
                     *(itm->begin() + 3) = 1;
                     return;

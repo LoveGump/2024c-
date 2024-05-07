@@ -7,6 +7,7 @@
 #include"mario.h"
 #include"pipe.h"
 #include"brick.h"
+#include<QSoundEffect>
 
 class Master
 {
@@ -16,6 +17,8 @@ public:
     Mario *mario;
     Pipe *pipe;
     Brick *brick;
+    //设置master死亡音效
+    QSoundEffect *master_Death_Music;
 
     QVector<int> v;
     QVector <QVector<int>> v1;

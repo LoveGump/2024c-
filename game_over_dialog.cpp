@@ -1,16 +1,16 @@
-#include "game_win.h"
-#include<QKeyEvent>
-#include<QTimer>
+#include "game_over_dialog.h"
 #include<QPainter>
 
-Game_Win_dialog::Game_Win_dialog() {
+Game_Over_Dialog::Game_Over_dialog(QWidget *parent)
+    : QWidget{parent}
+{
     //设置标题游戏胜利
     this->setWindowTitle("游戏胜利");
     this->setFixedSize(600,400);
     this->move(100,100);
     // 设置为模态对话框
     this->setWindowModality(Qt::ApplicationModal);
-    //添加下一关按钮
+    //添加返回按钮
     btn_Back = new My_PushButton(":/photo/back1.png");
     btn_Back->setParent(this);
     btn_Back->setFixedSize(120, 75);
@@ -50,9 +50,8 @@ Game_Win_dialog::Game_Win_dialog() {
 }
 
 // 绘制背景
-void Game_Win_dialog::paintEvent(QPaintEvent *) {
+void Game_Over_Dialog::paintEvent(QPaintEvent *) {
     QPainter painter(this);
 
-    painter.drawPixmap(0, 0, this->width(), this->height(), QPixmap(":/photo/Game_Win.png"));
+    painter.drawPixmap(0, 0, this->width(), this->height(), QPixmap(":/photo/gameover.png"));
 }
-

@@ -5,11 +5,11 @@ Mario::Mario() {
     Mario_Init();
 }
 void Mario::Mario_Init() {
-    x = 0; // 角色的理论x坐标
-    map_x =0 ; // 角色在地图中的x坐标
+    x = 3800; // 角色的理论x坐标
+    map_x = 300 ; // 角色在地图中的x坐标
     y = 455; // 角色y坐标
     colour = 1; // 角色颜色
-    life = 5; // 角色生命
+    life = 1; // 角色生命
     height = 20; // 角色高度
     speed = 5;
     distance = 0; // 跳跃距离
@@ -38,7 +38,7 @@ void Mario::Mario_Init() {
 void Mario::Move_state() // 移动状态更新函数
 {
     //如果walk_state==1197，walk_state = 0
-    if (walk_state == 1197)
+    if (walk_state == 1140)
     {
         walk_state = 0;
     }
@@ -62,6 +62,7 @@ void Mario::Move_state() // 移动状态更新函数
 void Mario::Mario_Move(const QString &direction)// 角色移动函数
 {
     //如果方向向右 并且x坐标小于300 并且处于可以移动的状态下
+
     if (direction == "right" && x <= 300 && can_move)
     {
         x += speed;
@@ -88,6 +89,7 @@ void Mario::Mario_Move(const QString &direction)// 角色移动函数
         walk_state += 57;
         ground_state -= speed;
     }
+
     else if ((direction == "left" && x < 0) || (!can_move && direction != "null"))
     {
         walk_state += 57;
@@ -118,7 +120,7 @@ void Mario::Jump_And_Down()// 跳跃和下落函数
 void Mario::Mario_die()
 {
     // 如果马里奥 死了 并且 死亡向上动画尚未完成
-    if (is_die && die_state < 40)
+    if (is_die && die_state < 20)
     {
         // 将马里奥向上移动并增加死亡动画状态
         y -= 5;
@@ -127,7 +129,7 @@ void Mario::Mario_die()
         die_pix_state += 50;
     }
     //如果马里奥 死了 并且 死亡向上动画 完成  开始向下的动画
-    else if (is_die && die_state >= 40)
+    else if (is_die && die_state >= 20)
     {
         // 一旦死亡 向上的动画完成，将马里奥向下移动
         y += 5;

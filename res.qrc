@@ -31,7 +31,6 @@
         <file>photo/walk_left1.png</file>
         <file>photo/walk_left2.png</file>
         <file>photo/walk_left3.png</file>
-        <file>photo/walk_right1.png</file>
         <file>photo/walk_right2.png</file>
         <file>photo/walk_right3.png</file>
         <file>music/course_clear.wav</file>
@@ -39,7 +38,6 @@
         <file>music/flagpole.wav</file>
         <file>music/out_of_time.wav</file>
         <file>music/stage_clear.wav</file>
-        <file>music/world_clear.wav</file>
         <file>music/start.wav</file>
         <file>photo/end3.png</file>
         <file>photo/help3.png</file>
@@ -58,7 +56,6 @@
         <file>music/break.wav</file>
         <file>music/jump.wav</file>
         <file>music/win.wav</file>
-        <file>music/coin.wav</file>
         <file>music/mushroom.wav</file>
         <file>photo/help.png</file>
         <file>photo/castle1.png</file>
@@ -68,5 +65,12 @@
         <file>photo/gold_cion.png</file>
         <file>photo/sky1.png</file>
         <file>photo/background.png</file>
+        <file>photo/walk_right1.png</file>
+        <file>photo/background2.png</file>
+        <file>music/out_of_life.wav</file>
+        <file>music/master_death.wav</file>
+        <file>music/.mp3/coin1 (2).wav</file>
+        <file>music/coin.mp3</file>
+        <file>music/coin.wav</file>
     </qresource>
 </RCC>

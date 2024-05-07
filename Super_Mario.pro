@@ -18,9 +18,9 @@ SOURCES += \
     cinema.cpp \
     flag.cpp \
     game_help.cpp \
-    game_over.cpp \
+    game_over_dialog.cpp \
     game_pause.cpp \
-    game_win.cpp \
+    game_win_dialog.cpp \
     main.cpp \
     mainwindow.cpp \
     mario.cpp \
@@ -36,9 +36,9 @@ HEADERS += \
     cinema.h \
     flag.h \
     game_help.h \
-    game_over.h \
+    game_over_dialog.h \
     game_pause.h \
-    game_win.h \
+    game_win_dialog.h \
     mainwindow.h \
     mario.h \
     master.h \
