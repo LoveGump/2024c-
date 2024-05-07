@@ -1,8 +1,11 @@
-#include "game_over_dialog.h"
-#include<QPainter>
+#include"game_over_dialog.h"
 
-Game_Over_Dialog::Game_Over_dialog(QWidget *parent)
-    : QWidget{parent}
+#include<QPainter>
+#include<QKeyEvent>
+// #include<QTimer>
+
+
+Game_Over_Dialog::Game_Over_Dialog()
 {
     //设置标题游戏胜利
     this->setWindowTitle("游戏胜利");

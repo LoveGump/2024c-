@@ -1,6 +1,6 @@
 #include "game_win_dialog.h"
 #include<QKeyEvent>
-#include<QTimer>
+// #include<QTimer>
 #include<QPainter>
 
 Game_Win_dialog::Game_Win_dialog() {

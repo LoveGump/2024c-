@@ -7,6 +7,7 @@
 #include"unkown_surprise.h"
 #include"mario.h"
 #include"castle.h"
+#include<QSoundEffect>
 
 
 class MushRoom
@@ -26,6 +27,9 @@ public:
     Brick *brick;
     Unknown_Surprise *unknown;
     Mario *mario;
+
+    //吃掉蘑菇的音乐
+    QSoundEffect *Grow_up_Music;
 
     MushRoom();
 

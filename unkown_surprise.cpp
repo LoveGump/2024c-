@@ -64,7 +64,8 @@ void Unknown_Surprise::Unknown_Init()
 // 更新未知方块状态
 void Unknown_Surprise::Unknown_State()
 {
-    if (unknown_state == 750) {
+    if (unknown_state == 750)
+    {
         unknown_state = 0;
     }
     unknown_state += 50;
@@ -74,19 +75,22 @@ void Unknown_Surprise::Unknown_State()
 void Unknown_Surprise::Crash_state()
 {
     //如果金币的状态在（0，240）上
-    if (coin_state > 0 && coin_state < 240) {
+    if (coin_state > 0 && coin_state < 240)
+    {
        // cout << coin_y << endl;
         coin_state += 30;
        //金币金币出现在 向上 20 个坐标
         coin_y -= 20;
     }//如果金币的状态是240，就变成0
-    else if (coin_state == 240) {
+    else if (coin_state == 240)
+    {
         coin_state = 0;
     }
 }
 
 // 处理顶到未知方块
-void Unknown_Surprise::Unknown_crash(QVector < QVector < int >> ::iterator it){
+void Unknown_Surprise::Unknown_crash(QVector < QVector < int >> ::iterator it)
+{
     //顶到方块
     coin_state = 30;
 

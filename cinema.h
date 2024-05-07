@@ -19,8 +19,9 @@
 #include"mushroom.h"
 #include"castle.h"
 #include <QSoundEffect>
-#include "game_win.h"
+#include "game_win_dialog.h"
 #include"flag.h"
+#include"game_over_dialog.h"
 //#include"mainwindow.h"
 
 
@@ -50,6 +51,7 @@ public:
     QString key; // 按键状态
     Game_Pause *Pause; // 游戏暂停对象
     Game_Win_dialog *win;
+    Game_Over_Dialog *game_over;
    // QMainWindow *mainWindow;
 
 
@@ -83,6 +85,9 @@ public:
     QSoundEffect *Coin_Music;
     //出现蘑菇
     QSoundEffect *Mushroom_Music;
+    //跳跃
+    QSoundEffect *Jump_Music;
+
 
 
 

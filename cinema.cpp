@@ -5,7 +5,7 @@
 #include <QFontDatabase>
 
 #include"mainwindow.h"
-#include"game_win.h"
+#include"game_win_dialog.h"
 
 Cinema::Cinema(QWidget *parent)
     : QWidget{parent}
@@ -48,7 +48,6 @@ void Cinema::Game_Init()// 初始化游戏
         main_theme_Music->play();
     });
 
-
     //fire = new Fire;
     //fire->Fire_Move(mary, pipe, brick, master);
 
@@ -79,15 +78,18 @@ void Cinema::Pause_Init()
             timer3 = startTimer(40);
             mario->walk_state = 0;//初始化mario的行走状态
             key = "null";
-            Pause->close();
+            Pause->hide();
+
         });
     });
     //链接重新游戏
     connect(Pause->initGame, &QPushButton::clicked, this, [=]() {
 
         QTimer::singleShot(500, this, [=]() {
-            Pause_Game_Init();//游戏初始化
-            Pause->close();
+
+            Game_Init();//游戏初始化
+            Pause->hide();
+
             QTimer::singleShot(1500, this, [=]() {
                 timer1 = startTimer(15);//开启定时器
                 timer3 = startTimer(40);
@@ -102,7 +104,7 @@ void Cinema::Pause_Init()
         QTimer::singleShot(500, this, [=]() {
 
 
-            this->hide();
+            this->close();
         });
     });
 
@@ -156,8 +158,12 @@ void Cinema::Music_Init()
     Coin_Music->setVolume(0.5f);
     //出现蘑菇
     Mushroom_Music = new QSoundEffect;
-    Mushroom_Music->setSource(QUrl::fromLocalFile(":/music/mushroom.wav"));
+    Mushroom_Music->setSource(QUrl::fromLocalFile(":/music/powerup_appears_1.wav"));
     Mushroom_Music->setVolume(0.5f);
+    //跳跃
+    Jump_Music = new QSoundEffect;
+    Jump_Music ->setSource(QUrl::fromLocalFile(":/music/jump.wav"));
+    Jump_Music->setVolume(0.5f);
 
 
 
@@ -191,6 +197,10 @@ void Cinema::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Space:
         case Qt::Key_W:
         case Qt::Key_Up:
+            if(mario->height > 0)
+            {
+                Jump_Music->play();
+            }
             mario->is_jump = true;
 
             break;
@@ -522,6 +532,14 @@ void Cinema::timerEvent(QTimerEvent *event)
         mushroom->Move_state();
 
         master->Master_Move();
+        if(mario->is_die&&mario->life>1)
+        {
+            death_Music->play();
+        }
+        else if(mario->is_die)
+        {
+            Out_of_Life_Music->play();
+        }
 
 
         Die_Init();
@@ -849,7 +867,7 @@ void Cinema::Die_Init()
     //如果马里奥死了
     if (mario->y >= 500 && mario->life > 1)
     {
-        death_Music->play();
+
         mario->y = 455;
         mario->life--;
         killTimer(timer3);
@@ -872,23 +890,20 @@ void Cinema::Die_Init()
     //如果生命死光了
     if (mario->y > 500 && mario->life <= 1)
     {
-        //关闭计时器
+
         killTimer(timer1);
         if (is_kill_timer2)
         {
             killTimer(timer2);
         }
         killTimer(timer3);
-        Out_of_Life_Music->play();
-        QTimer::singleShot(3000, this, [=]() {
-            Out_of_Life_Music->stop();
-        });
+
         Game_Over();
     }
 
 }
 
-// 游戏胜利处理弹出新窗口，显示游戏胜利（理想情况下可以做一段小视频）
+// 游戏胜利 弹出新窗口，显示游戏胜利（理想情况下可以做一段小视频）
 void Cinema::Game_Win()
 {
 
@@ -927,15 +942,9 @@ void Cinema::Game_Win()
     });
     //链接重新游戏
     connect(win->btn_InitGame, &QPushButton::clicked, this, [=]() {
-
-
         QTimer::singleShot(500, this, [=]() {
-
             //
             //
-
-
-            qDebug()<<"5555";
             win->close();
             delete win;
             Game_Init();//游戏初始化
@@ -961,30 +970,26 @@ void Cinema::Game_Win()
         });
     });
 
-
-
-
-
 }
 
 //游戏失败窗口
 void Cinema::Game_Over()
 {
+    qDebug()<<"AADA";
     QTimer::singleShot(500, this, [=]() {
         game_start = false;
         is_win = true;
         update();
 
     });
-    win = new Game_Win_dialog;//初始化暂停窗口
-
-    win->setParent(this);
-
-    win->show();
-    qDebug()<<111;
-    //链接返回主界面
-    connect(win->btn_Back, &QPushButton::clicked, this, [=](){
-
+    qDebug()<<"AADA";
+    game_over = new Game_Over_Dialog;//初始化暂停窗口
+qDebug()<<"3ADA";
+    game_over->setParent(this);
+qDebug()<<"2ADA";
+    game_over->show();
+qDebug()<<"1ADA";
+    connect(game_over->btn_Back, &QPushButton::clicked, this, [=](){
 
         QTimer::singleShot(500, this, [=]() {
 
@@ -992,40 +997,34 @@ void Cinema::Game_Over()
             emit
                 this->back();
         });
-
-
-
     });
     //链接重新游戏
-    connect(win->btn_InitGame, &QPushButton::clicked, this, [=]() {
+    connect(game_over->btn_InitGame, &QPushButton::clicked, this, [=]() {
 
-
-        QTimer::singleShot(500, this, [=]() {
-
+        QTimer::singleShot(500, this, [=](){
             //
             //
+            game_over->close();
+            delete game_over;
             Game_Init();//游戏初始化
-            win->close();
-            QTimer::singleShot(1500, this, [=]() {
+
+            QTimer::singleShot(500, this, [=]() {
                 timer1 = startTimer(15);//开启定时器
                 timer3 = startTimer(40);
                 game_start = true;
+                is_win = false;
             });
         });
     });
 
     //链接退出游戏
-    connect(win->btn_Exit, &QPushButton::clicked, this, [=]() {
+    connect(game_over->btn_Exit, &QPushButton::clicked, this, [=]() {
 
         QTimer::singleShot(500, this, [=]() {
             this->close();
 
         });
     });
-
-    win->exec();
-
-
 }
 
 //初始化重新开始游戏的函数

@@ -3,16 +3,20 @@
 
 #include <QWidget>
 #include"my_pushbutton.h"
+#include<QDialog>
 
-class Game_Over : public QWidget
+class Game_Over_Dialog: public QDialog
 {
-    Q_OBJECT
+
 public:
-    explicit Game_Over(QWidget *parent = nullptr);
+    Game_Over_Dialog();
+
     My_PushButton *btn_Back;//回到主页
     My_PushButton *btn_InitGame;//重新开始
     My_PushButton *btn_Exit;//退出游戏
-    void paintEvent(QPaintEvent *event) override;
+
+
+    void paintEvent(QPaintEvent *event);
 signals:
 };
 
