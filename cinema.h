@@ -35,7 +35,9 @@ public:
 
 
     int timer1; // 计时器1
+
     int timer2; // 计时器2
+
     int timer3; // 计时器3
 
     bool is_kill_timer2; // 计时器2是否关闭

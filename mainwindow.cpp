@@ -75,9 +75,9 @@ MainWindow::MainWindow(QWidget *parent)
             this->hide();
             gamehelp = new game_help();
             gamehelp->show();
-         connect(gamehelp,&game_help::back,this,[=](){
+            connect(gamehelp,&game_help::back,this,[=](){
                 this->show();
-           });
+            });
         });
     });
 
