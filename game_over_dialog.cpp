@@ -2,37 +2,33 @@
 
 #include<QPainter>
 #include<QKeyEvent>
-// #include<QTimer>
-
 
 Game_Over_Dialog::Game_Over_Dialog()
 {
-    //设置标题游戏胜利
-    this->setWindowTitle("游戏胜利");
-    this->setFixedSize(600,400);
-    this->move(100,100);
+    this->setFixedSize(LENGTH_OF_GAMEOVER,WIDTH_OF_GAMEOVER);
+    this->move(X_IN_WINDOW,Y_IN_WINDOW);
     // 设置为模态对话框
     this->setWindowModality(Qt::ApplicationModal);
     //添加返回按钮
     btn_Back = new My_PushButton(":/photo/back1.png");
     btn_Back->setParent(this);
-    btn_Back->setFixedSize(120, 75);
-    btn_Back->setIconSize(QSize(120, 75));//设置图片大小
-    btn_Back->move(75, 300);
+    btn_Back->setFixedSize(LENGTH_OF_PUSHBUTTON,WIDTH_OF_PUSHBUTTON);
+    btn_Back->setIconSize(QSize(LENGTH_OF_PUSHBUTTON, WIDTH_OF_PUSHBUTTON));//设置图片大小
+    btn_Back->move(75, Y_OF_PUSHBUTTON);
 
     //添加重新开始按钮
     btn_InitGame = new My_PushButton(":/photo/initGame1.png");
     btn_InitGame->setParent(this);
-    btn_InitGame->setFixedSize(120, 75);
-    btn_InitGame->setIconSize(QSize(120, 75));
-    btn_InitGame->move(225, 300);
+    btn_InitGame->setFixedSize(LENGTH_OF_PUSHBUTTON, WIDTH_OF_PUSHBUTTON);
+    btn_InitGame->setIconSize(QSize(LENGTH_OF_PUSHBUTTON, WIDTH_OF_PUSHBUTTON));
+    btn_InitGame->move(225, Y_OF_PUSHBUTTON);
 
     //添加退出游戏按钮
     btn_Exit = new My_PushButton(":/photo/Exit.png");//添加离开按钮
     btn_Exit->setParent(this);
-    btn_Exit->setFixedSize(120, 75);
-    btn_Exit->setIconSize(QSize(120, 75));
-    btn_Exit->move(375, 300);
+    btn_Exit->setFixedSize(LENGTH_OF_PUSHBUTTON, WIDTH_OF_PUSHBUTTON);
+    btn_Exit->setIconSize(QSize(LENGTH_OF_PUSHBUTTON, WIDTH_OF_PUSHBUTTON));
+    btn_Exit->move(375, Y_OF_PUSHBUTTON);
 
     connect(btn_Back,&QPushButton::clicked, this, [=]() {
         btn_Back->zoom1();

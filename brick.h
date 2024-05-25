@@ -6,6 +6,8 @@
 
 class Brick
 {
+
+
 public:
     QVector<int> v;
     QVector<QVector<int>> v2; // 储存坐标的二维容器

@@ -4,9 +4,8 @@
 #include<QPainter>
 
 Game_Pause::Game_Pause() {
-    // 设置标题
-    this->setWindowTitle("游戏暂停");
-    this->setFixedSize(200, 240);
+
+    this->setFixedSize(LENGTH_OF_GAMEPAUSE, WIDTH_OF_GAMEPAUSE);
     this->move(300,130);
     // 设置为模态对话框
     this->setWindowModality(Qt::ApplicationModal);
@@ -14,23 +13,23 @@ Game_Pause::Game_Pause() {
     //添加继续游戏按钮
     btn_continue = new My_PushButton(":/photo/continueGame1.png");
     btn_continue->setParent(this);
-    btn_continue->setFixedSize(150, 75);
-    btn_continue->setIconSize(QSize(150, 75));//设置图片大小
-    btn_continue->move(20, 10);
+    btn_continue->setFixedSize(LENGTH_OF_PUSHBUTTON, WIDTH_OF_PUSHBUTTON);
+    btn_continue->setIconSize(QSize(LENGTH_OF_PUSHBUTTON, WIDTH_OF_PUSHBUTTON));//设置图片大小
+    btn_continue->move(X_OF_PUSHBUTTON, 10);
 
     //添加重新开始按钮
     initGame = new My_PushButton(":/photo/initGame1.png");
     initGame->setParent(this);
-    initGame->setFixedSize(150, 75);
-    initGame->setIconSize(QSize(150, 75));
-    initGame->move(20, 90);
+    initGame->setFixedSize(LENGTH_OF_PUSHBUTTON, WIDTH_OF_PUSHBUTTON);
+    initGame->setIconSize(QSize(LENGTH_OF_PUSHBUTTON, WIDTH_OF_PUSHBUTTON));
+    initGame->move(X_OF_PUSHBUTTON, 90);
 
-    //添加退出游戏按钮
-    btn_exit = new My_PushButton(":/photo/end3.png");//添加离开按钮
-    btn_exit->setParent(this);
-    btn_exit->setFixedSize(150, 75);
-    btn_exit->setIconSize(QSize(150, 75));
-    btn_exit->move(20, 170);
+    //添加返回主页按钮
+    btn_back = new My_PushButton(":/photo/back1.png");
+    btn_back->setParent(this);
+    btn_back->setFixedSize(LENGTH_OF_PUSHBUTTON, WIDTH_OF_PUSHBUTTON);
+    btn_back->setIconSize(QSize(LENGTH_OF_PUSHBUTTON, WIDTH_OF_PUSHBUTTON));
+    btn_back->move(X_OF_PUSHBUTTON, 170);
 
     connect(btn_continue,&QPushButton::clicked, this, [=]() {
         btn_continue->zoom1();
@@ -40,9 +39,10 @@ Game_Pause::Game_Pause() {
         initGame->zoom1();
         initGame->zoom2();
     });
-    connect(btn_exit,&QPushButton::clicked, this, [=]() {
-        btn_exit->zoom1();
-        btn_exit->zoom2();
+    connect(btn_back,&QPushButton::clicked, this, [=]() {
+        this->close();
+        btn_back->zoom1();
+        btn_back->zoom2();
     });
 
     // 设置焦点策略为StrongFocus，确保窗口接收键盘事件
@@ -62,7 +62,7 @@ void Game_Pause::keyPressEvent(QKeyEvent *event) {
         initGame->click();
         break;
     case Qt::Key_Q:
-        btn_exit->click();
+        btn_back->click();
         break;
     default:
         break;

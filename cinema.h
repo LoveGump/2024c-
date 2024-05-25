@@ -54,7 +54,7 @@ public:
     Game_Pause *Pause; // 游戏暂停对象
     Game_Win_dialog *win;
     Game_Over_Dialog *game_over;
-   // QMainWindow *mainWindow;
+
 
 
     Mario *mario;    //创建角色对象
@@ -66,6 +66,8 @@ public:
     Castle *castle;
     Flag *f;
     // Fire *fire;
+    //进入游戏过程中的音乐
+    QSoundEffect *stage_clear_Music;
     //普通背景音乐
     QSoundEffect *main_theme_Music;
     //死亡音乐

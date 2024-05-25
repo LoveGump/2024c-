@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     //设置窗口名字
     this->setWindowTitle("Super_Mario_bro");
     //设置窗口大小
-    this->setFixedSize(800,545);
+    this->setFixedSize(WINDOWLENGTH,WINDOWWIDTH);
     //设置图标
     QApplication::setWindowIcon(QIcon(":/photo/mario.png"));
     //设置开始游戏按钮
@@ -29,9 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     background_Music->setVolume(0.5f);  //设置音量，在0到1之间
     background_Music->play(); // 播放声音
 
-    stage_clear_Music = new QSoundEffect;
-    stage_clear_Music->setSource(QUrl::fromLocalFile(":/music/stage_clear.wav"));
-    stage_clear_Music->setVolume(0.5f);
+
 
 
     //设置按下按钮之后的事件
@@ -44,15 +42,15 @@ MainWindow::MainWindow(QWidget *parent)
 
         QTimer::singleShot(500,this,[=](){
             this->hide();
-            stage_clear_Music->play();
+            //stage_clear_Music->play();
 
             gamescene = new Cinema;
 
             gamescene->show();
-            QTimer::singleShot(1500, this, [=]() {
-                stage_clear_Music->stop();
+            // QTimer::singleShot(1500, this, [=]() {
+            //   //  stage_clear_Music->stop();
 
-            });
+            // });
             connect(gamescene,&Cinema::back,this,[=](){
                 this->show();
                 background_Music->play();
@@ -103,5 +101,5 @@ void MainWindow::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
 
-    painter.drawPixmap(0,0,800,550,QPixmap(":/photo/background.png"));//画背景图
+    painter.drawPixmap(0,0,WINDOWLENGTH,WINDOWWIDTH + 5,QPixmap(":/photo/background.png"));//画背景图
 }

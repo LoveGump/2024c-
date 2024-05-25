@@ -5,8 +5,8 @@
 game_help::game_help(QWidget *parent)
     : QWidget{parent}
 {
-    this->setWindowTitle("游戏帮助");
-    this->setFixedSize(800,550);
+    this->setWindowTitle("Game_Help");
+    this->setFixedSize(LENGTH_OF_HELP,WIDTH_OF_HELP);
     //设置帮助按钮
     My_PushButton *back_Btn = new My_PushButton(":/photo/back.png");
     back_Btn->setParent(this);//设置父类
@@ -28,5 +28,5 @@ game_help::game_help(QWidget *parent)
 void game_help::paintEvent(QPaintEvent *) {
     QPainter painter(this);
     //绘制背景
-    painter.drawPixmap(0, 0, 800, 550, QPixmap(":/photo/help.png"));
+    painter.drawPixmap(0, 0, LENGTH_OF_HELP, WIDTH_OF_HELP, QPixmap(":/photo/help.png"));
 }

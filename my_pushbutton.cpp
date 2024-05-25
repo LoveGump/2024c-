@@ -75,7 +75,6 @@ void My_PushButton::mousePressEvent(QMouseEvent *event)
 {
     // 按钮被按下时播放音效
     if (event->button() == Qt::LeftButton) {
-
         mouse_Press_Music->play();
     }
     // 调用父类的事件处理函数

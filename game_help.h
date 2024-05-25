@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QWidget>
 #include<QPainter>
+#define LENGTH_OF_HELP 800
+#define WIDTH_OF_HELP 545
+
 
 class game_help : public QWidget
 {

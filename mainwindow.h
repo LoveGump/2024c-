@@ -10,6 +10,13 @@
 #include"cinema.h"
 #include"game_help.h"
 
+#define WINDOWLENGTH 800
+#define WINDOWWIDTH 545
+#define WIN_OF_MARIO_x 8700
+#define GAMEOVER_LENGTH 600
+#define GAMEOVER_WIDTH 400
+
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -34,8 +41,7 @@ public:
     game_help *gamehelp;
 
     QSoundEffect *background_Music;
-    //进入游戏过程中的音乐
-    QSoundEffect *stage_clear_Music;
+
 
     ~MainWindow();
 

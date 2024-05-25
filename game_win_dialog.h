@@ -4,6 +4,13 @@
 #include <QDialog>
 #include"my_pushbutton.h"
 #include<QWidget>
+#define LENGTH_OF_GAMEWIN 600
+#define WIDTH_OF_GAMEWIN 400
+#define LENGTH_OF_PUSHBUTTON 120
+#define WIDTH_OF_PUSHBUTTON 75
+#define X_IN_WINDOW 100
+#define Y_IN_WINDOW 100
+#define Y_OF_PUSHBUTTON 300
 
 class Game_Win_dialog : public QDialog
 {

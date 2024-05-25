@@ -9,7 +9,7 @@ void Mario::Mario_Init() {
     map_x = 0 ; // 角色在地图中的x坐标
     y = 455; // 角色y坐标
     colour = 1; // 角色颜色
-    life = 5; // 角色生命
+    life = 1; // 角色生命
     height = 20; // 角色高度
     speed = 5;
     distance = 0; // 跳跃距离
